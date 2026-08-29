@@ -1,0 +1,14 @@
+.controls {
+	display: none;
+	align-items: center;
+}
+
+.controls button {
+	color: var(--color-text-light);
+}
+
+@media (min-width: 992px) {
+	.controls {
+		display: flex;
+	}
+}

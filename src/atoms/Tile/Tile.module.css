@@ -1,0 +1,68 @@
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* space between icon & text */
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;  
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200); 
+}
+
+.tile span { 
+     display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+/* ================= ICON ================= */
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+/* ================= ACTIVE ================= */
+.active {
+  border-color: var(--color-primary, #2563eb);
+  background-color: rgba(37, 99, 235, 0.08);
+}
+
+.active .label {
+  color: var(--color-primary, #2563eb);
+}
+
+/* ================= VARIANTS ================= */
+.default {}
+
+.bordered {
+  background: transparent;
+  border: 2px solid var(--color-gray-400);
+}
+
+.inverse {
+  background: transparent;
+  border: 1px solid var(--color-stroke50);
+}
+
+.inverse .label {
+  color: var(--color-text-light);
+}
+
+.inverse:hover,
+.inverse.active {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ================= HOVER ================= */
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+}

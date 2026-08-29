@@ -1,0 +1,16 @@
+.slide {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.contentColumn,
+.imageColumn { width: 100%; }
+.description { margin-bottom: var(--space-md); }
+
+@media (min-width: 1200px) {
+	.slide { flex-direction: row; }
+	.contentColumn { width: 37%; margin-left: 80px; }
+	.imageWithContent { width: 63%; }
+}

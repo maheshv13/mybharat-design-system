@@ -1,0 +1,99 @@
+/* =========================================================
+   Base Layout
+   ========================================================= */
+
+.vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   Grid
+   ========================================================= */
+
+.grid {
+  display: grid;
+}
+
+
+/* =========================================================
+   Grid Columns
+   ========================================================= */
+
+.gridColumns1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gridColumns2 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gridColumns3 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gridColumns4 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+
+/* =========================================================
+   Responsive Grid Columns
+   ========================================================= */
+
+@media (min-width: 640px) {
+  .gridColumns2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gridColumns3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gridColumns4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .gridColumns3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gridColumns4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+
+/* =========================================================
+   Gaps
+   ========================================================= */
+
+/*
+  Tailwind equivalent:
+
+  gap-3 = 0.75rem
+  gap-6 = 1.5rem
+  gap-8 = 2rem
+
+  We use design-system spacing tokens instead where possible.
+*/
+
+.gapSm {
+  gap: 0.75rem;
+}
+
+.gapMd {
+  gap: 1.5rem;
+}
+
+.gapLg {
+  gap: 2rem;
+}

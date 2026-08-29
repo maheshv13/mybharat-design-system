@@ -1,0 +1,64 @@
+/* 1. Box sizing rules & font baseline */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%; /* Ensures 1rem = 16px */
+}
+
+/* 2. Remove default margins and paddings */
+body, 
+h1, h2, h3, h4, h5, h6,
+p, 
+figure, 
+blockquote, 
+dl, dd,
+ul, ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. Core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+
+/* 2. Remove default styles */
+ul, ol {
+    list-style: none;
+}
+
+/* 4. Make images easier to work with */
+img, picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* 5. Inherit fonts for inputs and buttons */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* Normalise the achor defaul color */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Normalise the styles */
+button, input, select, optgroup, textarea, ::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+    border: none;
+    background-color: transparent;
+}

@@ -1,0 +1,20 @@
+.section {
+  width: 100%;
+  padding-inline: var(--space-md);
+}
+
+/* Background variants */
+
+.bg-muted {
+  background: var(--color-surface-muted);
+}
+
+.bg-dark {
+  background: var(--color-surface-dark);
+  color: white;
+}
+
+.bg-primary {
+  background: var(--color-primary);
+  color: white;
+}

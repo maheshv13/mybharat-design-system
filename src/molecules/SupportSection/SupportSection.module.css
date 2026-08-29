@@ -1,0 +1,11 @@
+.support {
+	display: none;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+@media (min-width: 992px) {
+	.support {
+		display: flex;
+	}
+}

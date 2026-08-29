@@ -1,0 +1,10 @@
+.rowActions {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rowActions button:not(:last-child) {
+    margin-right: 12px;
+}

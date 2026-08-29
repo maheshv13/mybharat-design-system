@@ -1,0 +1,10 @@
+.heading {
+	margin-bottom: var(--space-sm);
+}
+
+.links {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+	margin-bottom: var(--space-lg);
+}

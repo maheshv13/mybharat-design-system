@@ -1,0 +1,20 @@
+.wrapper {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.title {
+	margin-bottom: var(--space-sm);
+}
+
+.item {
+	padding-top: var(--space-xs);
+	padding-bottom: var(--space-xs);
+}
+
+@media (min-width: 992px) {
+	.wrapper {
+		padding-left: var(--space-xl);
+		padding-right: var(--space-xl);
+	}
+}

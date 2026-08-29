@@ -1,0 +1,14 @@
+:root {
+
+  --size-container-sm: 640px;
+  --size-container-md: 960px;
+  --size-container-lg: 1200px;
+  --size-container-xl: 1400px;
+
+  --size-card-sm: 220px;
+  --size-card-md: 260px;
+  --size-card-lg: 320px;
+
+  --size-container-width: var(--size-container-lg);
+
+}

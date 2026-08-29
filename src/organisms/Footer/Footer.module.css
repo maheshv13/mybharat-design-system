@@ -1,0 +1,22 @@
+.footer { background-color: #f3f3f3; padding: var(--space-lg) 0; }
+.footer h6 { margin-top: 0;}
+.columns { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); }
+.description { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.updated { display: inline-block; background-color: #ddd; border-radius: 999px; padding: var(--space-sm) var(--space-md); margin-top: var(--space-sm); font-weight: var(--font-weight-medium);}
+.poweredBy { display: flex; align-items: center; gap: var(--space-sm); padding-bottom: var(--space-md); }
+.digitalIndia { display: flex; align-items: center; width: 110px; }
+@media (min-width: 768px) {
+	.columns { grid-template-columns: repeat(2, 1fr); }
+	.brandColumn { order: 3; }
+	.importantColumn { order: 2; }
+	.usefulColumn { order: 1; }
+	.socialColumn { order: 4; }
+}
+@media (min-width: 992px) {
+	.footer { padding: var(--space-2xl) 0; }
+	.columns { grid-template-columns: repeat(4, 1fr); }
+	.brandColumn { order: 1; }
+	.importantColumn { order: 2; }
+	.usefulColumn { order: 3; }
+	.socialColumn { order: 4; }
+}

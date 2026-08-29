@@ -1,0 +1,71 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Shared Geo Tag */
+.geoTag {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+}
+
+/*  Overlay Variant */
+
+.overlay .geoTag {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+}
+
+/*  Hover Reveal Variant */
+
+.hover .geoTag {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
+}
+
+.hover:hover .geoTag {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*  Inline Variant */
+
+.inlineWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inline {
+  position: static;
+}
+
+/*  Sizes */
+.xs {
+  width: 80px;
+  height: 80px;
+}
+
+.sm {
+  width: 120px;
+  height: 120px;
+}
+
+.md {
+  width: 160px;
+  height: 160px;
+}

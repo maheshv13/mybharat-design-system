@@ -1,0 +1,15 @@
+.paginationWrap {
+  display: flex;
+  justify-content:space-between;
+  align-items: center;
+  margin-block: 1.25rem;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.pagination button {
+  margin-inline: .5rem;
+}

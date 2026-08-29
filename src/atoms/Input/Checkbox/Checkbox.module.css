@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.wrapper.left {
+  flex-direction: column-reverse;
+}
+
+.label {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  margin-block-end: 2px;
+}
+
+.formcontrol {
+  accent-color: var(--color-primary);
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+}
+.formcontrol:disabled {
+  opacity: .8;
+}

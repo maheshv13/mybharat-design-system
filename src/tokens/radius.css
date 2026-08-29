@@ -1,0 +1,10 @@
+:root {
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-xxl: 32px;
+  --radius-3xl: 64px;
+  --radius-full: 999px;
+}

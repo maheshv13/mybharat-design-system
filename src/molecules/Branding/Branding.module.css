@@ -1,0 +1,22 @@
+.horizontal,
+.vertical {
+	display: flex;
+	align-items: center;
+}
+
+.horizontal {
+	width: 210px;
+	gap: var(--space-sm);
+}
+
+.vertical {
+	width: 125px;
+	flex-direction: column-reverse;
+	gap: var(--space-xs);
+}
+
+.separator {
+	width: 1px;
+	align-self: stretch;
+	background-color: var(--color-neutralColor300);
+}

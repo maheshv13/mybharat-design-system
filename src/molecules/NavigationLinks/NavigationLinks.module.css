@@ -1,0 +1,260 @@
+.NavigationLinks {
+  display: none;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.NavigationLinks a {
+  padding: var(--space-md) var(--space-sm);
+  transition-duration: 200ms;
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .NavigationLinks {
+    display: flex;
+  }
+}
+
+
+/* Common Navigation States
+*/
+
+.NavigationLinks a:hover,
+.NavigationLinks button:hover,
+.NavigationLinks .menuItem:hover > button {
+  color: var(--color-primary);
+}
+
+.active {
+  color: var(--color-primary);
+}
+
+.inactive {
+  color: inherit;
+}
+
+
+/* 
+   Level 1 Menu Item
+   Replaces:
+   relative group
+   */
+
+.menuItem {
+  position: relative;
+}
+
+
+/* 
+   Level 1 Parent Button
+   Replaces:
+   flex items-center px-3 py-2 gap-1
+   transition-colors duration-200
+   */
+
+.parentButton {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font: inherit;
+  color: var(--color-neutralColor);
+  padding: var(--space-md) var(--space-sm);
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.parentButton:hover {
+  color: var(--color-primary);
+}
+
+
+/* 
+   Level 2 Dropdown
+   Replaces:
+   absolute top-full left-0 mt-2
+   bg-white border border-gray-200 rounded shadow-md
+   min-w-[220px] z-50
+   */
+
+.NavigationLinks .dropdown {
+  position: absolute;
+
+  top: 100%;
+  left: 0;
+  min-width: var(--size-card-md);
+  box-shadow: 0 0 #0000;
+  font-size: inherit;
+  color: inherit;
+  background: var(--color-text-light);
+  border: 1px solid var(--color-neutralColor100);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 50;
+
+  /* Hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transform: translateY(-4px);
+
+  transition:
+    opacity 200ms ease,
+    visibility 200ms ease,
+    transform 200ms ease;
+}
+
+
+/* 
+   Dropdown visibility
+   Replaces:
+   group-hover:opacity-100
+   group-hover:visible
+   */
+
+.menuItem:hover > .dropdown,
+.menuItem:focus-within > .dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translateY(0);
+}
+
+
+/* 
+   Level 2 Links
+   */
+
+.NavigationLinks .dropdownLink {
+  display: flex;
+  align-items: start;
+
+  width: 100%;
+
+  padding: var(--space-sm) var(--space-md);
+
+  text-align: left;
+
+  text-decoration: none;
+
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.dropdownLink:hover {
+  color: var(--color-primary);
+  background-color: var(--color-secondary-40);
+}
+
+
+/* 
+   Nested Level 2 → Level 3 Menu
+   */
+
+.nestedMenu {
+  position: relative;
+  width: 100%;
+}
+
+
+/* 
+   Level 2 Collapsible Trigger
+   Replaces:
+   flex items-center justify-between
+   w-full px-4 py-2
+   transition-colors duration-200
+   */
+
+.nestedTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: var(--space-sm) var(--space-md);
+
+  border: 0;
+  background: transparent;
+
+  font: inherit;
+  color: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    color 200ms ease,
+    background-color 200ms ease;
+}
+
+.nestedTrigger:hover {
+  color: var(--color-primary);
+  background-color: var(--color-secondary-40);
+}
+
+
+/* 
+   Level 3 Menu
+   */
+
+.thirdLevelMenu {
+  display: flex;
+  flex-direction: column;
+
+  padding-left: var(--space-sm);
+
+  background: var(--color-text-light);
+}
+
+
+/* 
+   Dropdown Arrow
+   */
+
+.nestedMenu :global(svg) {
+  transition: transform 200ms ease;
+}
+
+.transition {
+  transition: transform 200ms ease;
+}
+
+.arrowOpen {
+  transform: rotate(180deg);
+}
+
+
+/* 
+   Accessibility / Keyboard Focus
+    */
+
+.parentButton:focus-visible,
+.nestedTrigger:focus-visible,
+.dropdownLink:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+
+/* 
+   Reduced Motion
+   */
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown,
+  .parentButton,
+  .nestedTrigger,
+  .dropdownLink,
+  .nestedMenu :global(svg) {
+    transition: none;
+  }
+}

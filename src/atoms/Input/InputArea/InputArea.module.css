@@ -1,0 +1,92 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.label, 
+.formcontrol {
+  width: 100%;
+}
+
+.label {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  margin-block-end: 2px;
+}
+
+.label .required {
+  color: var(--color-danger);
+}
+
+.labelicon {
+  font-size: 1.25rem;
+  margin-inline-end: 2px;
+}
+
+.section {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  font-size: 1.25rem;
+  inset-inline-start: 12px;
+  inset-block-start: 12px;
+}
+
+.wrapper .formcontrol {
+  border: 1px solid var(--color-stroke200);
+  padding: 8px 12px 12px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.wrapper .icon + .formcontrol {
+  padding: 8px 12px 12px 36px;
+}
+
+.wrapper .section.lg .formcontrol {
+  height: 120px;
+}
+
+.wrapper .success .formcontrol {
+  border-color: var(--color-success);
+}
+
+.wrapper .success + .description {
+  color: var(--color-success);
+}
+
+.wrapper .error .formcontrol {
+  border-color: var(--color-danger);
+}
+
+.wrapper .error + .description {
+  color: var(--color-danger);
+}
+
+.wrapper .formcontrol:hover,
+.wrapper .formcontrol:focus-visible,
+.wrapper .formcontrol:focus-within,
+.wrapper .formcontrol:focus,
+.wrapper .formcontrol:active {
+  outline: 1px solid var(--color-primary);
+}
+
+.wrapper .formcontrol:focus {
+  box-shadow:0 0 0 4px var(--color-primary200);
+}
+
+.description {
+  display: flex;
+  align-items: center;
+  color: var(--color-neutralColor600);
+  font-size: 0.875rem;
+}
+
+.description span {
+  display: inline-block;
+  margin-inline-end: 4px;
+}

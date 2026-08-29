@@ -1,0 +1,34 @@
+.accordionItem:not(:last-child) {
+  border-bottom: 1px solid #ddd;
+  padding-block-end: 16px;
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  background: white;
+  padding: 16px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+  text-align: left;
+}
+
+.contentWrapper {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.content {
+  padding: 16px 0 0 16px;
+}
+
+.icon {
+  transition: transform 0.3s ease;
+}
+
+.rotate {
+  transform: rotate(90deg);
+}

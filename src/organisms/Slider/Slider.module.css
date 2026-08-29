@@ -1,0 +1,68 @@
+.slider {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Track that moves */
+.track {
+  display: flex;
+  width: 100%;
+}
+
+/* Each slide */
+.track > * {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+}
+
+/* Navigation buttons */
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.prev {
+  left: 16px;
+}
+
+.next {
+  right: 16px;
+}
+
+/* Dots */
+.dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-white);
+  opacity: 0.5;
+  border: none;
+  cursor: pointer;
+  border: 1px solid var(--color-primary);
+}
+
+.active {
+  background: var(--color-primary);
+  opacity: 1;
+}

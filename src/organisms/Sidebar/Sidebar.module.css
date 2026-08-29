@@ -1,0 +1,29 @@
+.sidebar {
+  list-style: none;
+  padding: 16px;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.itemInner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.active {
+  background: #e5f0ff;
+  color: #1d4ed8;
+}
+
+.subList {
+  list-style: none;
+  padding-left: 20px;
+}

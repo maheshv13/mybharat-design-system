@@ -1,0 +1,35 @@
+.tableResponsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--color-stroke100);
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+table thead {
+  background-color: var(--color-info);
+  color: white;
+}
+
+/* 1. Add borders to the cells */
+th, td {
+  border-bottom: 1px solid var(--color-stroke100);
+  border-right: 1px solid var(--color-stroke100);
+}
+
+/* 2. Remove right border from the last column to prevent double-bordering */
+th:last-child, 
+td:last-child {
+  border-right: none;
+}
+
+/* 3. Remove bottom border from the last row */
+tr:last-child td {
+  border-bottom: none;
+}

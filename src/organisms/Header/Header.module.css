@@ -1,0 +1,65 @@
+header.header {
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  z-index: 999;
+  top: 0;
+  background-color: var(--color-text-light);
+  border-bottom: 1px solid var(--color-neutralColor100);
+}
+
+.topBar {
+  background-color: var(--color-dark-blue);
+  color: var(--color-text-light);
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topBarContent,
+.utilityGroup,
+.mainRow,
+.mainActions,
+.headerRight {
+  display: flex;
+  align-items: center;
+}
+
+.topBarContent {
+  justify-content: space-between;
+  width: 100%;
+  font-size: var(--font-size-text-medium);
+}
+
+.utilityGroup {
+  gap: var(--space-sm);
+}
+
+.governmentText {
+  font-size: var(--font-size-text-medium);
+}
+
+.mainRow {
+  width: 100%;
+  padding-block: var(--space-xs);
+}
+
+.mainActions {
+  margin-left: auto;
+  gap: var(--space-sm);
+}
+
+.headerRight {
+  display: none;
+  flex-direction: row;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 992px) {
+  .headerRight {
+    display: flex;
+  }
+  .mainRow {
+    padding-block: 0;
+  }
+}

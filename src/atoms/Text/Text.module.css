@@ -1,0 +1,86 @@
+.text {
+  font-family: var(--font-family-base);
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+}
+
+.h1 { font-size: var(--font-size-h1); }
+.h2 { font-size: var(--font-size-h2); }
+.h3 { font-size: var(--font-size-h3); }
+.h4 { font-size: var(--font-size-h4); }
+.h5 { font-size: var(--font-size-h5); }
+.h6 { font-size: var(--font-size-h6); }
+
+.base {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+.title1,
+.title2,
+.title3 {
+  font-weight: var(--font-weight-medium);
+}
+
+.title1 { font-size: var(--font-size-title1); }
+.title2 { font-size: var(--font-size-title2); }
+.title3 { font-size: var(--font-size-title3); }
+
+.label1,
+.label2,
+.label3 {
+  color: var(--color-neutralColor900);
+}
+
+.label1 {
+  font-size: var(--font-size-label1);
+}
+
+.label2 {
+  font-size: var(--font-size-label2);
+}
+
+.label3 {
+  font-size: var(--font-size-label3);
+}
+
+.withBorder {
+  position: relative;
+  padding-block-end: var(--space-sm);
+  margin-block-end: var(--space-lg);
+}
+
+.withBorder::before {
+  content: "";
+  display: block;
+  width: 72px;
+  height: 2px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background-color: var(--color-primary);
+}
+
+.helper {
+  font-size: var(--font-size-text-medium);
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.error {
+  color: var(--color-danger);
+}
+
+.warning {
+  color: var(--color-warning);
+}

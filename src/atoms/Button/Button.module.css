@@ -1,0 +1,160 @@
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  background-color: transparent;
+}
+
+.button:hover {
+  box-shadow: 0 2px 3px 1px rgba(33%, 33%, 33%, 0.22);
+}
+
+.button:focus {
+  box-shadow: 0 0 0 4px var(--color-primary100);
+}
+
+.button:disabled {
+  opacity: 50%;
+}
+
+/* Buttons styles starts */
+.primary {
+  background: var(--color-primary);
+  color: var(--color-text-light);
+}
+
+.tonal {
+  background: var(--color-primary100);
+  color: var(--color-text-dark);
+}
+
+.tonal:focus {
+  box-shadow: 0 0 0 4px var(--color-primary50);
+}
+
+.primary-outlined {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.primary-outlined:hover {
+  background: var(--color-primary50);
+  box-shadow: none;
+}
+
+/* Success Buttons styles starts */
+
+.success {
+  background: var(--color-success);
+  color: var(--color-text-light);
+}
+
+.success:focus {
+  box-shadow: 0 0 0 4px var(--color-success100);
+}
+
+.success:disabled {
+  opacity: 50%;
+}
+
+.success-outlined {
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+}
+
+.success-outlined:hover {
+  background: var(--color-success50);
+  box-shadow: none;
+}
+
+.success-outlined:focus {
+  box-shadow: 0 0 0 4px var(--color-success100);
+}
+
+/* Danger Buttons styles starts */
+
+.danger {
+  background: var(--color-danger);
+  color: var(--color-text-light);
+}
+
+.danger:focus {
+  box-shadow: 0 0 0 4px var(--color-danger100);
+}
+
+.danger:disabled {
+  opacity: 50%;
+}
+
+.danger-outlined {
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+.danger-outlined:hover {
+  background: var(--color-danger50);
+  box-shadow: none;
+}
+
+/* Danger Buttons styles starts */
+
+.blue {
+  background: var(--color-blue);
+  color: var(--color-text-light);
+}
+
+.blue:focus,
+.blue-outlined:focus {
+  box-shadow: 0 0 0 4px var(--color-blue50);
+}
+
+.blue:disabled {
+  opacity: 50%;
+}
+
+.blue-outlined {
+  border: 1px solid var(--color-blue);
+  color: var(--color-blue);
+}
+
+.blue-outlined:hover {
+  background: var(--color-blue50);
+  box-shadow: none;
+}
+
+
+/* Buttons Size starts */
+.default {
+  padding: 10px 24px;
+}
+
+.xxs {
+  padding: 2px 8px;
+}
+
+.xs {
+  padding: 4px 8px;
+}
+
+.sm {
+  padding: 8px 16px;
+}
+
+.lg {
+  padding: 12px 24px;
+}
+
+/* Icon */
+.icon {
+  font-size: 1.25rem;
+}
+
+.full {
+  border-radius: 999px;
+}

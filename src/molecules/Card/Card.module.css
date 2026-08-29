@@ -1,0 +1,195 @@
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-stroke200);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  height: 100%;
+  transition: transform 0.3s ease-in-out;
+  scale: 1;
+  cursor: pointer;
+}
+
+.card:hover .cardHeader img {
+  transition: 0.3s; transform: scale(1.1);
+}
+
+.cardHeader {
+  position: relative;
+  height: 168px;
+  min-height: 168px;
+  background: linear-gradient(to top, var(--color-neutralColor50) 0%, var(--color-white) 30%);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  overflow: hidden;
+}
+
+.cardHeader img {
+  object-fit: contain;
+  max-width: 100%;
+  height: inherit;
+}
+
+.date {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: var(--color-white);
+  padding: var(--space-xs) var(--space-md);
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.date .label {
+  color: var(--color-white);
+}
+
+.cardBody {
+  height: 100%;
+}
+
+.cardContent {
+  padding: 0 var(--space-md) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex: 1;
+  height: 100%;
+}
+
+.cardTitle {
+  text-transform: capitalize;
+   display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* Replace 3 with your desired number of lines */
+  overflow: hidden;
+  line-clamp: 1; 
+}
+
+.cardDate {
+  border-block-start: 1px solid var(--color-stroke100);
+  border-block-end: 1px solid var(--color-stroke100);
+  padding: var(--space-sm) 0;
+}
+
+.fromDate {
+  display: flex;
+  gap: calc(var(--space-xs) * 3);
+}
+
+.image {
+  width: 100%;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.cardFooter {
+  margin-top: auto;
+  text-align: center;
+  padding: var(--space-xs);
+  background-color: var(--color-primary50);
+}
+
+.cardCategory {
+  letter-spacing: 0.05em;
+}
+
+.featureDivider {
+  border-top: 1px solid var(--color-neutralColor200);
+  margin: .5rem 0;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+
+}
+
+.dateRow,
+.statRow,
+.statContent {
+  display: flex;
+}
+
+.dateRow {
+  align-items: flex-start;
+  gap: var(--space-lg);
+}
+
+.dateIcon {
+  margin-top: 4px;
+}
+
+.statRow {
+  line-height: normal;
+}
+
+.statContent {
+  margin-left: var(--space-sm);
+}
+
+.statLabel {
+  width: 148px;
+}
+
+.quizButton {
+  width: 100%;
+  text-align: center;
+  padding: 8px 12px;
+  border: 1px solid;
+  border-radius: 8px;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  text-decoration: none;
+}
+
+.quizButton:hover {
+  box-shadow: 0 2px 3px 1px rgba(33%, 33%, 33%, 0.22);
+  text-decoration: none;
+}
+
+.quizButton:focus {
+  box-shadow: 0 0 0 4px var(--color-primary100);
+  text-decoration: none;
+}
+
+.quizButton:disabled {
+  opacity: 50%;
+}
+
+.questionWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.questions,
+.questionhours {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-sm);
+  font-size: var(--font-size-text-medium);
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  line-height: normal;
+}
+
+.questions {
+  color: var(--color-success);
+  background: var(--color-success50);
+}
+
+.questionhours {
+  color: var(--color-warning);
+  background: var(--color-warning50);
+}

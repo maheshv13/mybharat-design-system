@@ -1,0 +1,32 @@
+.left,
+.right,
+.top,
+.center,
+.content,
+.contentStart,
+.contentCenter {
+	display: flex;
+}
+
+.left,
+.right {
+	align-items: flex-start;
+	gap: var(--space-lg);
+}
+
+.right { flex-direction: row-reverse; }
+.top, .center { flex-direction: column; }
+.top { gap: var(--space-sm); }
+.center { gap: var(--space-md); align-items: center; text-align: center; }
+.content { flex-direction: column; }
+.contentStart { align-items: flex-start; text-align: left; }
+.contentCenter { align-items: center; text-align: center; }
+.titleLink, .titleText { margin-bottom: var(--space-xs); }
+.titleLink { display: block; }
+.centerText { text-align: center; }
+.description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; font-size: var(--font-size-text-small); }
+.iconXs { font-size: var(--font-size-label2); }
+.iconSm { font-size: var(--font-size-base); }
+.iconMd { font-size: var(--font-size-base); }
+.iconLg { font-size: var(--font-size-h5); }
+.iconXl { font-size: var(--font-size-h4); }
