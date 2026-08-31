@@ -3,7 +3,11 @@
 :root {
 
   /* Font Family */
-  --font-family-base: "Noto Sans", sans-serif;
+  --font-family-base: var(
+    --font-noto-sans,
+    "Noto Sans",
+    sans-serif
+  );
 
   /* Font Weights */
   --font-weight-regular: 400;
@@ -41,9 +45,11 @@
   --letter-spacing-label: 1px;
 
   @media (max-width: 768px) {
-    --font-size-h1: var(--font-size-h5);
-    --font-size-h2: var(--font-size-h5);
-    --font-size-h3: var(--font-size-h5);
-    --font-size-h4: var(--font-size-h5);
+    :root {
+      --font-size-h1: var(--font-size-h5);
+      --font-size-h2: var(--font-size-h5);
+      --font-size-h3: var(--font-size-h5);
+      --font-size-h4: var(--font-size-h5);
+    }
   }
 }

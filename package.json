@@ -1,6 +1,6 @@
 {
-  "name": "@mybharat/design-system",
-  "version": "0.1.0",
+  "name": "@mybharatyouth/design-system",
+  "version": "0.1.1",
   "description": "MY Bharat React Design System",
   "type": "module",
 
@@ -40,6 +40,10 @@
     "react-dom": ">=18 <20"
   },
 
+  "dependencies": {
+    "react-icons": "^5.7.0"
+  },
+
   "devDependencies": {
     "@chromatic-com/storybook": "latest",
     "@eslint/js": "^10.0.1",
@@ -69,7 +73,19 @@
     "vitest": "latest"
   },
 
-  "dependencies": {
-    "react-icons": "^5.7.0"
-  }
+  "keywords": [
+    "react",
+    "design-system",
+    "typescript",
+    "css-modules",
+    "atomic-design",
+    "mybharat"
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maheshv13/mybharat-design-system.git"
+  },
+
+  "license": "MIT"
 }
