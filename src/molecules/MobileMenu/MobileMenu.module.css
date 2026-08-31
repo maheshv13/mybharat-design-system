@@ -2,11 +2,12 @@
 	display: block;
 }
 .togglePosition { 
-    position: absolute;
-    top: calc(var(--space-xs) * 11);
+    top: 50%;
     right: var(--space-sm);
-    display: flex;
     align-items: flex-end;
+    display: flex;
+    position: absolute;
+    transform: translateY(-50%)
  }
 .toggle { 
     display: flex;
