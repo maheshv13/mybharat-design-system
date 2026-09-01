@@ -40,17 +40,17 @@ export function Example() {
 }
 ```
 
-The same package can be used with React and Next.js applications.
+The package can be used with both React and Next.js applications.
 
-Components that use browser APIs or interactive behavior should be rendered from a client component when used in Next.js.
+Components that use browser APIs or interactive behavior should be rendered from a Client Component when required by Next.js.
 
 ---
 
 ## Storybook
 
-Explore the MY Bharat Design System components, variants, states, and usage examples in Storybook:
+Explore the MY Bharat Design System components, variants, states, and usage examples:
 
-**[View MY Bharat Design System Storybook](https://maheshv13.github.io/mybharat-design-system/?path=/docs/atoms-button--docs)**
+[View the MY Bharat Design System Storybook](https://maheshv13.github.io/mybharat-design-system/?path=/docs/atoms-button--docs)
 
 The Storybook provides an interactive reference for:
 
@@ -64,7 +64,6 @@ The Storybook provides an interactive reference for:
 Use Storybook as the primary visual reference when selecting and implementing components from the design system.
 
 > **Note:** Storybook documentation reflects the components available in the current source code. Ensure you are using the appropriate package version when implementing components.
-
 
 ---
 
@@ -165,9 +164,9 @@ Consumers do not need to import internal component CSS files.
 
 ## Font Configuration
 
-The design system uses **Noto Sans** as the default font.
+The design system uses **Noto Sans** as the default font family.
 
-The font is configured through the following CSS custom property:
+The font family is configured through the following CSS custom property:
 
 ```css
 --font-family-base
@@ -177,25 +176,57 @@ The design system supports both standard React applications and Next.js applicat
 
 ### Standard React Application
 
-For a standard React application, import the design system stylesheet:
+The design system defines Noto Sans as the preferred font family.
+
+For the font to render correctly, ensure that **Noto Sans is loaded in your application**.
+
+### Step 1: Load Noto Sans
+
+Add the following to your application's global stylesheet:
+
+```css
+@import url(
+  "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+);
+```
+
+For example:
+
+```css
+/* src/index.css */
+
+@import url(
+  "https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+);
+```
+
+### Step 2: Import the Design System Stylesheet
+
+Import the design system stylesheet in your application entry point:
 
 ```tsx
 import "@mybharatyouth/design-system/styles.css";
 ```
 
-The bundled stylesheet provides the default Noto Sans configuration.
-
-No additional font configuration is required.
+The design system will use Noto Sans when it is available.
 
 ---
 
-### Next.js Application
+## Next.js
+
+The design system can be used in Next.js applications.
 
 For Next.js applications, it is recommended to use `next/font/google`.
 
 This allows Next.js to optimize and self-host the font.
 
-### Step 1: Import Noto Sans
+### Step 1: Install the Package
+
+```bash
+npm install @mybharatyouth/design-system
+```
+
+### Step 2: Import Noto Sans
 
 In your `app/layout.tsx` file:
 
@@ -205,9 +236,7 @@ import { Noto_Sans } from "next/font/google";
 import "@mybharatyouth/design-system/styles.css";
 ```
 
----
-
-### Step 2: Configure the Font
+### Step 3: Configure the Font
 
 Create the Noto Sans font configuration:
 
@@ -219,11 +248,9 @@ const notoSans = Noto_Sans({
 });
 ```
 
-The `variable` option allows the font to be exposed as a CSS custom property that can be used by external stylesheets.
+The `variable` option exposes the font as a CSS custom property that can be used by the design system.
 
----
-
-### Step 3: Apply the Font Variable to the Root Element
+### Step 4: Apply the Font Variable
 
 Apply the generated font variable to the `<html>` element:
 
@@ -233,8 +260,6 @@ Apply the generated font variable to the `<html>` element:
   className={`${notoSans.variable} h-full antialiased`}
 >
 ```
-
----
 
 ### Complete Next.js Example
 
@@ -273,54 +298,7 @@ export default function RootLayout({
 }
 ```
 
-The design system will use the configured Noto Sans font through the CSS variable.
-
-Next.js supports exposing fonts as CSS variables and applying them through external stylesheets.
-
----
-
-## Next.js
-
-The design system can be used in Next.js applications.
-
-### Step 1: Install the Package
-
-```bash
-npm install @mybharatyouth/design-system
-```
-
-### Step 2: Import the Stylesheet
-
-Import the stylesheet in your root layout:
-
-```tsx
-import "@mybharatyouth/design-system/styles.css";
-```
-
-### Step 3: Configure the Font
-
-Use `next/font/google` to configure Noto Sans:
-
-```tsx
-import { Noto_Sans } from "next/font/google";
-
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-noto-sans",
-});
-```
-
-### Step 4: Apply the Font Variable
-
-Apply the font variable to the root `<html>` element:
-
-```tsx
-<html
-  lang="en"
-  className={`${notoSans.variable} h-full antialiased`}
->
-```
+The design system will automatically use the configured font variable when it is available.
 
 Interactive components that use browser APIs or React hooks should be rendered from a Client Component when required by Next.js.
 
@@ -329,6 +307,8 @@ Interactive components that use browser APIs or React hooks should be rendered f
 ## TypeScript
 
 The package includes TypeScript declaration files for the exported components.
+
+For example:
 
 ```tsx
 import type { ButtonProps } from "@mybharatyouth/design-system";
@@ -346,7 +326,7 @@ Atoms
 Molecules
   ↓
 Organisms
-  ↓
+
 Primitives / Layout
   ↓
 Application UI
@@ -389,7 +369,7 @@ Applications consuming the package should provide compatible versions of `react`
 
 Source code and development documentation are available on GitHub:
 
-https://github.com/maheshv13/mybharat-design-system
+[MY Bharat Design System Repository](https://github.com/maheshv13/mybharat-design-system)
 
 ---
 
