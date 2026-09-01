@@ -2,7 +2,7 @@
 	display: block;
 }
 .togglePosition { 
-    top: 50%;
+    top: 65%;
     right: var(--space-sm);
     align-items: flex-end;
     display: flex;
@@ -35,6 +35,9 @@
     width: 100%;
     padding: var(--space-xs) 0;
  }
+.submenuToggle.active {
+    color: var(--color-primary);
+}
 .submenu { 
     margin-left: var(--space-sm);
     display: flex;

@@ -132,20 +132,16 @@
    */
 
 .NavigationLinks .dropdownLink {
-  display: flex;
-  align-items: start;
-
-  width: 100%;
-
-  padding: var(--space-sm) var(--space-md);
-
-  text-align: left;
-
-  text-decoration: none;
-
-  transition:
-    color 200ms ease,
-    background-color 200ms ease;
+    display: flex;
+    align-items: start;
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    text-decoration: none;
+    transition:
+        color 200ms ease,
+        background-color 200ms ease;
 }
 
 .dropdownLink:hover {

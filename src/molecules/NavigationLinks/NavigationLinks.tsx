@@ -1,7 +1,17 @@
+"use client";
+
 import { useState } from "react";
+
 import { Icon } from "../../atoms/Icon";
 import NavigationItem from "./NavigationItem";
+
 import styles from "./NavigationLinks.module.css";
+
+import {
+  isNavigationItemActive,
+  isPathActive,
+} from "./navigationUtils";
+
 import type {
   ModalOpenState,
   NavigationActionHandlers,
@@ -10,53 +20,41 @@ import type {
 
 export interface NavigationLinksProps {
   links?: NavigationLink[];
+  currentPath?: string;
   navActionHandlers?: NavigationActionHandlers;
   modalOpenState?: ModalOpenState;
-  currentPath?: string;
 }
 
 const NavigationLinks = ({
   links = [],
+  currentPath = "",
   navActionHandlers = {},
   modalOpenState = {},
-  currentPath,
 }: NavigationLinksProps) => {
-  const activePath =
-    currentPath ??
-    (typeof window !== "undefined"
-      ? window.location.pathname
-      : "");
+  const [openSubMenus, setOpenSubMenus] =
+    useState<Record<string, boolean>>(
+      {}
+    );
 
-  // Controls only the third-level collapsible menus
-  const [openSubMenus, setOpenSubMenus] = useState<
-    Record<string, boolean>
-  >({});
+  const isActive = (
+    href?: string
+  ): boolean =>
+    isPathActive(
+      href,
+      currentPath
+    );
 
-  // Get pathname from full URL
-  const getPathname = (url?: string) => {
-    if (!url) return "";
+  const isParentActive = (
+    link: NavigationLink
+  ): boolean =>
+    isNavigationItemActive(
+      link,
+      currentPath
+    );
 
-    try {
-      return new URL(
-        url,
-        typeof window !== "undefined"
-          ? window.location.origin
-          : "http://localhost"
-      ).pathname;
-    } catch {
-      return url;
-    }
-  };
-
-  // Exact active match
-  const isActive = (href?: string) => {
-    if (!href) return false;
-
-    return activePath === getPathname(href);
-  };
-
-  // Toggle only Level 3 menu
-  const toggleSubMenu = (key: string) => {
+  const toggleSubMenu = (
+    key: string
+  ) => {
     setOpenSubMenus((current) => ({
       ...current,
       [key]: !current[key],
@@ -64,228 +62,234 @@ const NavigationLinks = ({
   };
 
   return (
-    <nav className={styles.NavigationLinks}>
-      {links.map((link, index) => {
-        const childLinks = link.children ?? [];
-        const hasChildren = childLinks.length > 0;
+    <nav
+      className={styles.NavigationLinks}
+      aria-label="Main navigation"
+    >
+      {links.map(
+        (link, index) => {
+          const childLinks =
+            link.children ?? [];
 
-        // =====================================================
-        // NORMAL LEVEL 1 LINK
-        // =====================================================
+          const hasChildren =
+            childLinks.length > 0;
 
-        if (!hasChildren) {
-          return (
-            <NavigationItem
-              key={`${link.label}-${index}`}
-              link={link}
-              navActionHandlers={navActionHandlers}
-              modalOpenState={modalOpenState}
-              isActive={isActive(link.href || link.to)}
-            />
-          );
-        }
+          /*
+           * LEVEL 1 - NORMAL LINK
+           */
 
-        // =====================================================
-        // LEVEL 1 PARENT ACTIVE
-        // =====================================================
-
-        const isParentActive =
-          isActive(link.href || link.to) ||
-          childLinks.some(
-            (subLink) =>
-              isActive(subLink.href || subLink.to) ||
-              subLink.children?.some((thirdLevelLink) =>
-                isActive(
-                  thirdLevelLink.href ||
-                    thirdLevelLink.to
-                )
-              )
-          );
-
-        // =====================================================
-        // LEVEL 1 DROPDOWN
-        // =====================================================
-
-        return (
-          <div
-            key={`${link.label}-${index}`}
-            className={styles.menuItem}
-          >
-            {/* =================================================
-                LEVEL 1 PARENT MENU
-                ================================================= */}
-
-            <button
-              type="button"
-              className={`${styles.parentButton} ${
-                isParentActive
-                  ? styles.active
-                  : styles.inactive
-              }`}
-              aria-haspopup="true"
-            >
-              {link.label}
-
-              <Icon
-                name="dropdown"
-                size="sm"
+          if (!hasChildren) {
+            return (
+              <NavigationItem
+                key={`${link.label}-${index}`}
+                link={link}
+                navActionHandlers={
+                  navActionHandlers
+                }
+                modalOpenState={
+                  modalOpenState
+                }
+                isActive={isActive(
+                  link.href ||
+                    link.to
+                )}
               />
-            </button>
+            );
+          }
 
-            {/* =================================================
-                LEVEL 2 MENU
-                ================================================= */}
+          const parentActive =
+            isParentActive(link);
 
-            <div className={styles.dropdown}>
-              {childLinks.map(
-                (subLink, childIndex) => {
-                  const hasThirdLevel =
-                    Array.isArray(
-                      subLink.children
-                    ) &&
-                    subLink.children.length > 0;
+          /*
+           * LEVEL 1 - DROPDOWN
+           */
 
-                  // =================================================
-                  // NORMAL LEVEL 2 LINK
-                  // =================================================
+          return (
+            <div
+              key={`${link.label}-${index}`}
+              className={styles.menuItem}
+            >
+              {/* LEVEL 1 TRIGGER */}
 
-                  if (!hasThirdLevel) {
-                    return (
-                      <NavigationItem
-                        key={`${subLink.label}-${childIndex}`}
-                        link={subLink}
-                        navActionHandlers={
-                          navActionHandlers
-                        }
-                        modalOpenState={
-                          modalOpenState
-                        }
-                        isActive={isActive(
-                          subLink.href ||
-                            subLink.to
-                        )}
-                        className={
-                          styles.dropdownLink
-                        }
-                      />
-                    );
-                  }
+              <button
+                type="button"
+                className={`${styles.parentButton} ${
+                  parentActive
+                    ? styles.active
+                    : styles.inactive
+                }`}
+                aria-haspopup="true"
+                aria-expanded={false}
+              >
+                <span>
+                  {link.label}
+                </span>
 
-                  // =================================================
-                  // LEVEL 2 WITH LEVEL 3
-                  // =================================================
+                <Icon
+                  name="dropdown"
+                  size="sm"
+                />
+              </button>
 
-                  const subMenuKey = `${index}-${childIndex}`;
+              {/* LEVEL 2 */}
 
-                  const isThirdLevelOpen =
-                    openSubMenus[subMenuKey];
+              <div
+                className={
+                  styles.dropdown
+                }
+              >
+                {childLinks.map(
+                  (
+                    subLink,
+                    childIndex
+                  ) => {
+                    const thirdLevelLinks =
+                      subLink.children ??
+                      [];
 
-                  const subChildLinks =
-                    subLink.children ?? [];
+                    const hasThirdLevel =
+                      thirdLevelLinks.length >
+                      0;
 
-                  const isSubLinkActive =
-                    isActive(
-                      subLink.href ||
-                        subLink.to
-                    ) ||
-                    subChildLinks.some(
-                      (thirdLevelLink) =>
-                        isActive(
-                          thirdLevelLink.href ||
-                            thirdLevelLink.to
-                        )
-                    );
+                    /*
+                     * LEVEL 2 -
+                     * NORMAL LINK
+                     */
 
-                  return (
-                    <div
-                      key={`${subLink.label}-${childIndex}`}
-                      className={
-                        styles.nestedMenu
-                      }
-                    >
-                      {/* =========================================
-                          LEVEL 2 COLLAPSIBLE TRIGGER
-                          ========================================= */}
-
-                      <button
-                        type="button"
-                        className={`${
-                          styles.nestedTrigger
-                        } ${
-                          isSubLinkActive
-                            ? styles.active
-                            : styles.inactive
-                        }`}
-                        onClick={() =>
-                          toggleSubMenu(
-                            subMenuKey
-                          )
-                        }
-                        aria-expanded={
-                          isThirdLevelOpen
-                        }
-                      >
-                        <span>
-                          {subLink.label}
-                        </span>
-
-                        <Icon
-                          name="dropdown"
-                          size="sm"
+                    if (
+                      !hasThirdLevel
+                    ) {
+                      return (
+                        <NavigationItem
+                          key={`${subLink.label}-${childIndex}`}
+                          link={
+                            subLink
+                          }
+                          navActionHandlers={
+                            navActionHandlers
+                          }
+                          modalOpenState={
+                            modalOpenState
+                          }
+                          isActive={isActive(
+                            subLink.href ||
+                              subLink.to
+                          )}
                           className={
-                            isThirdLevelOpen
-                              ? styles.arrowOpen
-                              : ""
+                            styles.dropdownLink
                           }
                         />
-                      </button>
+                      );
+                    }
 
-                      {/* =========================================
-                          LEVEL 3 COLLAPSIBLE MENU
-                          ========================================= */}
+                    /*
+                     * LEVEL 2 -
+                     * HAS LEVEL 3
+                     */
 
-                      {isThirdLevelOpen && (
-                        <div
-                          className={
-                            styles.thirdLevelMenu
-                          }
-                        >
-                          {subChildLinks.map(
-                            (
-                              thirdLevelLink,
-                              thirdIndex
-                            ) => (
-                              <NavigationItem
-                                key={`${thirdLevelLink.label}-${thirdIndex}`}
-                                link={
-                                  thirdLevelLink
-                                }
-                                navActionHandlers={
-                                  navActionHandlers
-                                }
-                                modalOpenState={
-                                  modalOpenState
-                                }
-                                isActive={isActive(
-                                  thirdLevelLink.href ||
-                                    thirdLevelLink.to
-                                )}
-                                className={
-                                  styles.dropdownLink
-                                }
-                              />
+                    const subMenuKey =
+                      `${index}-${childIndex}`;
+
+                    const isThirdLevelOpen =
+                      Boolean(
+                        openSubMenus[
+                          subMenuKey
+                        ]
+                      );
+
+                    const subLinkActive =
+                      isParentActive(
+                        subLink
+                      );
+
+                    return (
+                      <div
+                        key={`${subLink.label}-${childIndex}`}
+                        className={
+                          styles.nestedMenu
+                        }
+                      >
+                        {/* LEVEL 2 TRIGGER */}
+
+                        <button
+                          type="button"
+                          className={`${styles.nestedTrigger} ${
+                            subLinkActive
+                              ? styles.active
+                              : styles.inactive
+                          }`}
+                          onClick={() =>
+                            toggleSubMenu(
+                              subMenuKey
                             )
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
+                          }
+                          aria-expanded={
+                            isThirdLevelOpen
+                          }
+                          aria-haspopup="true"
+                        >
+                          <span>
+                            {
+                              subLink.label
+                            }
+                          </span>
+
+                          <Icon
+                            name="dropdown"
+                            size="sm"
+                            className={
+                              isThirdLevelOpen
+                                ? styles.arrowOpen
+                                : ""
+                            }
+                          />
+                        </button>
+
+                        {/* LEVEL 3 */}
+
+                        {isThirdLevelOpen && (
+                          <div
+                            className={
+                              styles.thirdLevelMenu
+                            }
+                          >
+                            {thirdLevelLinks.map(
+                              (
+                                thirdLevelLink,
+                                thirdIndex
+                              ) => (
+                                <NavigationItem
+                                  key={`${thirdLevelLink.label}-${thirdIndex}`}
+                                  link={
+                                    thirdLevelLink
+                                  }
+                                  navActionHandlers={
+                                    navActionHandlers
+                                  }
+                                  modalOpenState={
+                                    modalOpenState
+                                  }
+                                  isActive={isActive(
+                                    thirdLevelLink.href ||
+                                      thirdLevelLink.to
+                                  )}
+                                  className={
+                                    styles.dropdownLink
+                                  }
+                                />
+                              )
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        }
+      )}
     </nav>
   );
 };
