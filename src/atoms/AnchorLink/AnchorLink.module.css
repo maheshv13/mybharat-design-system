@@ -1,0 +1,65 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* ========================================
+   DEFAULT TEXT LINK
+   ======================================== */
+
+.default {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.default:hover {
+  color: var(--color-primary-dark);
+}
+
+.default:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   BUTTON STYLE
+   ======================================== */
+
+.link.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  padding: 8px 16px;
+}
+
+.link.button:hover,
+.link.button:active {
+  box-shadow: 0 2px 3px 1px rgba(33%, 33%, 33%, 0.22);
+}
+
+.link.button:focus {
+  box-shadow: 0 0 0 4px var(--color-primary100);
+}
+
+.link.button:disabled {
+  opacity: 50%;
+}

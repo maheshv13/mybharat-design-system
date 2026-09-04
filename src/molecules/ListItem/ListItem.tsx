@@ -2,7 +2,7 @@ import { Icon } from "../../atoms/Icon";
 import type { IconProps } from "../../atoms/Icon"; // Import IconProps
 import { Text } from "../../atoms/Text";
 import { Link } from "../../atoms/Link";
-import type { ElementType, ReactNode } from "react";
+import type { ReactNode } from "react";
 import styles from "./ListItem.module.css";
 
 const ALLOWED_ICON_POSITIONS = ["left", "right", "top", "center"] as const;
@@ -11,7 +11,7 @@ const ALLOWED_ICON_SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
 type IconPosition = (typeof ALLOWED_ICON_POSITIONS)[number];
 type IconSize = (typeof ALLOWED_ICON_SIZES)[number];
 
-export interface ListItemProps<T extends ElementType = "li"> {
+export interface ListItemProps {
   as?: "li" | "div";
   children?: ReactNode;
   title?: ReactNode;

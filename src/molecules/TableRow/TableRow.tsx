@@ -1,7 +1,6 @@
 import { Checkbox } from "../../atoms/Input";
 import TableCell from "../../atoms/TableCell/TableCell";
 import RowAction from "../RowAction/RowAction";
-import styles from "./TableRow.module.css";
 import type { ReactNode } from "react";
 
 export interface TableRowProps {

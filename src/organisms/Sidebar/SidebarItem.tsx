@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Icon } from "../../atoms/Icon";
 import { Link } from "../../atoms/Link";
 import styles from "./Sidebar.module.css";
-import type { ReactNode } from "react";
 import type { IconName } from "../../atoms/Icon/Icon";
 
 export interface SidebarItemProps {

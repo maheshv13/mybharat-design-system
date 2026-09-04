@@ -28,6 +28,7 @@ import {
   MdDeleteOutline,
   MdOutlineArrowCircleRight,
   MdChecklist,
+  MdOutlineSearch,
 } from "react-icons/md";
 
 import { 
@@ -80,6 +81,7 @@ export const ICON_REGISTRY = {
   delete: MdDeleteOutline,
   attempt:MdOutlineArrowCircleRight,
   score: MdChecklist,
+  search: MdOutlineSearch,
 
   // Fontawesome Icons
   user: FaUser,

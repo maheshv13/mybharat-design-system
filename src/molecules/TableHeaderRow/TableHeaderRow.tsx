@@ -1,6 +1,5 @@
 import { Checkbox } from "../../atoms/Input";
 import TableCell from "../../atoms/TableCell/TableCell";
-import styles from "./TableHeaderRow.module.css";
 
 export interface TableColumn {
   key: string;

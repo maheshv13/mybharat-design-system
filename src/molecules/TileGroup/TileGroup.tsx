@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import type { KeyboardEvent, MouseEvent, TouchEvent } from "react";
+
 import styles from "./TileGroup.module.css";
+
 import Tile from "../../atoms/Tile/Tile";
 import type { TileProps } from "../../atoms/Tile/Tile";
 import { Icon } from "../../atoms/Icon";
@@ -18,48 +20,68 @@ const TileGroup = ({ tiles = [] }: TileGroupProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
-  // 👉 swipe state
+  // Swipe / drag state
   const startX = useRef(0);
   const isDragging = useRef(false);
 
-  // ✅ detect visible tiles
+  // Detect visible tiles
   const calculateItemsPerView = () => {
     const el = containerRef.current;
-    if (!el) return;
+
+    if (!el) {
+      return;
+    }
 
     const visibleWidth = el.clientWidth;
     const itemFullWidth = TILE_WIDTH + GAP;
 
-    const count = Math.floor(visibleWidth / itemFullWidth);
+    const count = Math.floor(
+      visibleWidth / itemFullWidth
+    );
+
     setItemsPerView(count || 1);
   };
 
   useEffect(() => {
     calculateItemsPerView();
 
-    const observer = new ResizeObserver(calculateItemsPerView);
+    const observer = new ResizeObserver(
+      calculateItemsPerView
+    );
+
     if (containerRef.current) {
       observer.observe(containerRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
-  const step = itemsPerView <= 2 ? 1 : itemsPerView;
-  const totalSteps = tiles.length - itemsPerView;
+  const step =
+    itemsPerView <= 2 ? 1 : itemsPerView;
+
+  const totalSteps = Math.max(
+    tiles.length - itemsPerView,
+    0
+  );
 
   const scrollToIndex = (index: number) => {
     const el = containerRef.current;
-    if (!el) return;
 
-    const scrollAmount = index * (TILE_WIDTH + GAP);
+    if (!el) {
+      return;
+    }
 
-    // cancel any ongoing scroll (important)
+    const scrollAmount =
+      index * (TILE_WIDTH + GAP);
+
+    // Cancel any ongoing smooth scroll
     el.style.scrollBehavior = "auto";
-    el.scrollLeft = el.scrollLeft;
 
     requestAnimationFrame(() => {
       el.style.scrollBehavior = "smooth";
+
       el.scrollTo({
         left: scrollAmount,
       });
@@ -69,84 +91,127 @@ const TileGroup = ({ tiles = [] }: TileGroupProps) => {
   };
 
   const handleNext = () => {
-    const nextIndex = Math.min(currentIndex + step, totalSteps);
+    const nextIndex = Math.min(
+      currentIndex + step,
+      totalSteps
+    );
+
     scrollToIndex(nextIndex);
   };
 
   const handlePrev = () => {
-    const prevIndex = Math.max(currentIndex - step, 0);
+    const prevIndex = Math.max(
+      currentIndex - step,
+      0
+    );
+
     scrollToIndex(prevIndex);
   };
 
   // =========================
-  // ✅ Swipe / Drag Support
+  // Swipe / Drag Support
   // =========================
 
-  const onTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    startX.current = e.touches[0].clientX;
+  const onTouchStart = (
+    e: TouchEvent<HTMLDivElement>
+  ) => {
+    startX.current =
+      e.touches[0].clientX;
+
     isDragging.current = true;
   };
 
-  const onTouchEnd = (e: TouchEvent<HTMLDivElement>) => {
-    if (!isDragging.current) return;
+  const onTouchEnd = (
+    e: TouchEvent<HTMLDivElement>
+  ) => {
+    if (!isDragging.current) {
+      return;
+    }
 
-    const endX = e.changedTouches[0].clientX;
-    const diff = startX.current - endX;
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const diff =
+      startX.current - endX;
 
     if (Math.abs(diff) > 50) {
-      diff > 0 ? handleNext() : handlePrev();
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
     }
 
     isDragging.current = false;
   };
 
-  const onMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+  const onMouseDown = (
+    e: MouseEvent<HTMLDivElement>
+  ) => {
     startX.current = e.clientX;
     isDragging.current = true;
   };
 
-  const onMouseUp = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isDragging.current) return;
+  const onMouseUp = (
+    e: MouseEvent<HTMLDivElement>
+  ) => {
+    if (!isDragging.current) {
+      return;
+    }
 
-    const diff = startX.current - e.clientX;
+    const diff =
+      startX.current - e.clientX;
 
     if (Math.abs(diff) > 50) {
-      diff > 0 ? handleNext() : handlePrev();
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
     }
 
     isDragging.current = false;
   };
 
   // =========================
-  // ✅ Keyboard Accessibility
+  // Keyboard Accessibility
   // =========================
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "ArrowRight") handleNext();
-    if (e.key === "ArrowLeft") handlePrev();
+  const handleKeyDown = (
+    e: KeyboardEvent<HTMLDivElement>
+  ) => {
+    if (e.key === "ArrowRight") {
+      handleNext();
+    }
+
+    if (e.key === "ArrowLeft") {
+      handlePrev();
+    }
   };
 
-  const isSlider = tiles.length > itemsPerView;
+  const isSlider =
+    tiles.length > itemsPerView;
 
   return (
     <div
       className={styles.wrapper}
-      tabIndex={0} // ✅ focusable
+      tabIndex={0}
       onKeyDown={handleKeyDown}
       role="region"
       aria-label="Tile carousel"
     >
       {isSlider && (
         <button
+          type="button"
           className={`${styles.arrow} ${styles.left}`}
           onClick={handlePrev}
           disabled={currentIndex === 0}
           aria-label="Previous tiles"
         >
-          <Icon 
-            name="arrowLeft" 
+          <Icon
+            name="arrowLeft"
             size={32}
-            />
+          />
         </button>
       )}
 
@@ -167,10 +232,10 @@ const TileGroup = ({ tiles = [] }: TileGroupProps) => {
               aria-roledescription="slide"
               aria-label={`${index + 1} of ${tiles.length}`}
             >
-              <Tile 
+              <Tile
                 variant="inverse"
-                {...tile} 
-                />
+                {...tile}
+              />
             </div>
           ))}
         </div>
@@ -178,15 +243,18 @@ const TileGroup = ({ tiles = [] }: TileGroupProps) => {
 
       {isSlider && (
         <button
+          type="button"
           className={`${styles.arrow} ${styles.right}`}
           onClick={handleNext}
-          disabled={currentIndex >= totalSteps}
+          disabled={
+            currentIndex >= totalSteps
+          }
           aria-label="Next tiles"
         >
-          <Icon 
-            name="arrowRight" 
+          <Icon
+            name="arrowRight"
             size={32}
-            />
+          />
         </button>
       )}
     </div>

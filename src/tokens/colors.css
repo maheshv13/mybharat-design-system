@@ -10,6 +10,7 @@
   --color-primary500: color-mix(in srgb, var(--color-primary) 90%, white);
 
     /* Primary Tranperent */
+  --color-primary-8: color-mix(in srgb, var(--color-primary) 8%, white);
   --color-primary-16: color-mix(in srgb, var(--color-primary) 16%, white);
   --color-primary-24: color-mix(in srgb, var(--color-primary) 24%, white);
   --color-primary-32: color-mix(in srgb, var(--color-primary) 32%, white);

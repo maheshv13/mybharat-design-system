@@ -35,7 +35,8 @@ const Checkbox = ({
         name={name}
         className={styles.formcontrol} 
         id={id} 
-        //checked={checked}
+        checked={checked}
+        required={required}
         disabled={disabled}
         />
       

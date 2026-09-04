@@ -1,7 +1,7 @@
 import ListItem from "../../molecules/ListItem/ListItem";
 import { getLayoutClasses } from "./getLayoutClasses";
 import type { Columns, Gap, LayoutVariant } from "./getLayoutClasses";
-import type { ElementType, ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { ListItemProps } from "../../molecules/ListItem/ListItem";
 
 export interface ListData extends Omit<ListItemProps, "as"> {

@@ -1,6 +1,5 @@
 import { Text } from "../../atoms/Text"
 import { Icon } from "../../atoms/Icon"
-import { Image } from "../../atoms/Image"
 import type { ReactNode } from "react";
 import styles from "./SocialLinks.module.css";
 

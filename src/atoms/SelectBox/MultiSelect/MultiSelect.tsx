@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -8,7 +9,7 @@ import {
 
 import type {
   ReactNode,
-  SelectHTMLAttributes
+  SelectHTMLAttributes,
 } from "react";
 
 import styles from "./MultiSelect.module.css";
@@ -231,111 +232,103 @@ const MultiSelect = ({
    * Hidden measurement elements are used so
    * the calculation is based on actual widths.
    */
-  const calculateVisibleTags = () => {
-    const container =
-      selectedValuesRef.current;
+  const calculateVisibleTags = useCallback(() => {
+  const container =
+    selectedValuesRef.current;
 
-    const measurementContainer =
-      measurementRef.current;
+  const measurementContainer =
+    measurementRef.current;
 
-    if (
-      !container ||
-      !measurementContainer
-    ) {
-      return;
-    }
+  if (
+    !container ||
+    !measurementContainer
+  ) {
+    return;
+  }
 
-    if (selectedOptions.length === 0) {
-      setVisibleTagCount(0);
-      return;
-    }
+  if (selectedOptions.length === 0) {
+    setVisibleTagCount(0);
+    return;
+  }
 
-    const availableWidth =
-      container.clientWidth;
+  const availableWidth =
+    container.clientWidth;
 
-    if (availableWidth <= 0) {
-      return;
-    }
+  if (availableWidth <= 0) {
+    return;
+  }
 
-    const tagElements =
-      measurementContainer.querySelectorAll(
-        '[data-measure-tag="true"]'
-      );
-
-    const moreButton =
-      moreButtonMeasureRef.current;
-
-    if (!moreButton) {
-      return;
-    }
-
-    const moreButtonWidth =
-      moreButton.offsetWidth;
-
-    let usedWidth = 0;
-    let count = 0;
-
-    tagElements.forEach(
-      (element, index) => {
-        const tagWidth =
-          (element as HTMLElement)
-            .offsetWidth;
-
-        const remainingCount =
-          selectedOptions.length -
-          index -
-          1;
-
-        /*
-         * Add +N width only when there
-         * will still be hidden tags.
-         */
-        const requiredWidth =
-          tagWidth +
-          (count > 0
-            ? 6
-            : 0) +
-          (remainingCount > 0
-            ? moreButtonWidth + 6
-            : 0);
-
-        if (
-          usedWidth + requiredWidth <=
-          availableWidth
-        ) {
-          usedWidth +=
-            tagWidth +
-            (count > 0
-              ? 6
-              : 0);
-
-          count += 1;
-        }
-      }
+  const tagElements =
+    measurementContainer.querySelectorAll(
+      '[data-measure-tag="true"]'
     );
 
-    /*
-     * Always try to show at least one tag
-     * when there are selected options.
-     */
-    if (
-      count === 0 &&
-      selectedOptions.length > 0
-    ) {
-      count = 1;
-    }
+  const moreButton =
+    moreButtonMeasureRef.current;
 
-    setVisibleTagCount(count);
-  };
+  if (!moreButton) {
+    return;
+  }
+
+  const moreButtonWidth =
+    moreButton.offsetWidth;
+
+  let usedWidth = 0;
+  let count = 0;
+
+  tagElements.forEach(
+    (element, index) => {
+      const tagWidth =
+        (element as HTMLElement)
+          .offsetWidth;
+
+      const remainingCount =
+        selectedOptions.length -
+        index -
+        1;
+
+      const requiredWidth =
+        tagWidth +
+        (count > 0 ? 6 : 0) +
+        (remainingCount > 0
+          ? moreButtonWidth + 6
+          : 0);
+
+      if (
+        usedWidth + requiredWidth <=
+        availableWidth
+      ) {
+        usedWidth +=
+          tagWidth +
+          (count > 0 ? 6 : 0);
+
+        count += 1;
+      }
+    }
+  );
+
+  if (
+    count === 0 &&
+    selectedOptions.length > 0
+  ) {
+    count = 1;
+  }
+
+  setVisibleTagCount(count);
+}, [selectedOptions]);
 
   /*
    * Recalculate after selection changes
    */
-  useLayoutEffect(() => {
+useLayoutEffect(() => {
+   const frame = requestAnimationFrame(() => {
     calculateVisibleTags();
-  }, [
-    selectedOptions,
-  ]);
+  });
+
+  return () => {
+    cancelAnimationFrame(frame);
+  };
+}, [calculateVisibleTags]);
 
   /*
    * Recalculate when width changes
@@ -344,7 +337,9 @@ const MultiSelect = ({
     const container =
       selectedValuesRef.current;
 
-    if (!container) return;
+    if (!container) {
+      return;
+    }
 
     const resizeObserver =
       new ResizeObserver(() => {
@@ -356,9 +351,7 @@ const MultiSelect = ({
     return () => {
       resizeObserver.disconnect();
     };
-  }, [
-    selectedOptions,
-  ]);
+  }, [calculateVisibleTags]);
 
   return (
     <div

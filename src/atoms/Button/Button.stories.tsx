@@ -93,3 +93,77 @@ export const WithRightIcon: Story = {
     iconPosition: "right",
   },
 };
+
+export const VariantGallery: Story = {
+  render: () => {
+    const variants = [
+      "primary",
+      "primary-outlined",
+      "tonal",
+      "success",
+      "success-outlined",
+      "danger",
+      "danger-outlined",
+      "blue",
+      "blue-outlined",
+    ] as const;
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "12px",
+          alignItems: "center",
+        }}
+      >
+        {variants.map((variant) => (
+          <Button
+            key={variant}
+            variant={variant}
+            label={variant
+              .split("-")
+              .map((part) =>
+                part.charAt(0).toUpperCase() + part.slice(1),
+              )
+              .join(" ")}
+          />
+        ))}
+      </div>
+    );
+  },
+};
+
+export const SizeGallery: Story = {
+  render: () => {
+    const sizes = ["xxs", "xs", "sm", "default", "lg"] as const;
+
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          flexWrap: "wrap",
+        }}
+      >
+        {sizes.map((size) => (
+          <Button
+            key={size}
+            size={size}
+            variant="primary"
+            label={size.toUpperCase()}
+          />
+        ))}
+      </div>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: "Disabled Button",
+    variant: "danger-outlined",
+    disabled: true,
+  },
+};
