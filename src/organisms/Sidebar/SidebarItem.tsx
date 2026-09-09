@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Icon } from "../../atoms/Icon";
-import { Link } from "../../atoms/Link";
+import { AnchorLink } from "../../atoms/AnchorLink";
 import styles from "./Sidebar.module.css";
 import type { IconName } from "../../atoms/Icon/Icon";
 
@@ -40,7 +40,7 @@ const SidebarItem = ({
           {icon && <Icon name={icon} size="md" />}
 
           {href ? (
-            <Link variant="dark" href={href}>{label}</Link>
+            <AnchorLink variant="dark" href={href}>{label}</AnchorLink>
           ) : (
             <span>{label}</span>
           )}

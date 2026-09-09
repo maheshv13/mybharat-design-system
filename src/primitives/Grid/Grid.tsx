@@ -15,7 +15,7 @@ const Grid = ({
   className = "",
 }: GridProps) => {
 
-  const [mobile, tablet, desktop] = cols.split(" ");
+  const [desktop, tablet, mobile] = cols.split(" ");
 
   const gridStyle: CSSProperties & Record<"--cols-mobile" | "--cols-tablet" | "--cols-desktop", string> = {
     "--cols-mobile": mobile,

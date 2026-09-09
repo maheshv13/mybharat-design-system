@@ -1,5 +1,5 @@
 
-import { Link } from "../../atoms/Link";
+import { AnchorLink } from "../../atoms/AnchorLink";
 import { Text } from "../../atoms/Text";
 import type { MouseEventHandler, ReactNode } from "react";
 import styles from "./LinkList.module.css";
@@ -37,13 +37,13 @@ const LinkList = ({
 
             {/* ✅ Navigation link */}
             {(link.href || link.to) && (
-              <Link 
+              <AnchorLink
                 href={link.href} 
                 to={link.to} 
                 variant={variant === "dark" ? "dark" : "default"}
                 >
                 {link.label}
-              </Link>
+              </AnchorLink>
             )}
 
             {/* ✅ Action item (button-like) */}

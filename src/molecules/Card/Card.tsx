@@ -1,6 +1,6 @@
 import { Image } from "../../atoms/Image";
 import { Text } from "../../atoms/Text";
-import { Link } from "../../atoms/Link";
+import { AnchorLink } from "../../atoms/AnchorLink";
 import Stack from "../../primitives/Stack/Stack";
 import styles from "./Card.module.css";
 import { Icon } from "../../atoms/Icon";
@@ -570,9 +570,9 @@ const Card = ({
 
                 { href &&
                   cta && (
-                    <Link href={href} className={styles.quizButton}>
+                    <AnchorLink href={href} className={styles.quizButton}>
                       {cta}
-                    </Link>
+                    </AnchorLink>
                   )
                 }
               </div>

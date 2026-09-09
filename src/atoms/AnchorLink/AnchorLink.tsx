@@ -22,7 +22,7 @@ export interface AnchorLinkProps
   target?: string;
   rel?: string;
 
-  variant?: "default" | "button";
+  variant?: "default" | "button" | "dark";
 
   className?: string;
 }
@@ -66,7 +66,7 @@ const AnchorLink = ({
       );
     }
 
-    if (!["default", "button"].includes(variant)) {
+    if (!["default", "button", "dark"].includes(variant)) {
       console.warn(
         `AnchorLink: Unknown variant "${variant}". Falling back to "default".`
       );

@@ -1,6 +1,6 @@
 import { Image } from "../../atoms/Image";
 import { Text } from "../../atoms/Text";
-import { Link } from "../../atoms/Link";
+import { AnchorLink } from "../../atoms/AnchorLink";
 import type { ReactNode } from "react";
 import styles from "./SlideItem.module.css";
 
@@ -28,7 +28,7 @@ const SlideItem = ({
         <div className={styles.contentColumn}>
           {heading && <Text as="h1">{heading}</Text>}
           {description && <Text as="p" className={styles.description}>{description}</Text>}
-          {link && <Link href={link}>Know More</Link>}
+          {link && <AnchorLink href={link}>Know More</AnchorLink>}
         </div>
       )}
      

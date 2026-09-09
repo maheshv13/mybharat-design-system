@@ -1,7 +1,7 @@
 import { Icon } from "../../atoms/Icon";
 import type { IconProps } from "../../atoms/Icon"; // Import IconProps
 import { Text } from "../../atoms/Text";
-import { Link } from "../../atoms/Link";
+import { AnchorLink } from "../../atoms/AnchorLink";
 import type { ReactNode } from "react";
 import styles from "./ListItem.module.css";
 
@@ -115,14 +115,14 @@ const ListItem = ({
 
     if (href || to) {
       return (
-        <Link
+        <AnchorLink
           href={href}
           to={to}
           variant={linkVariant}
           className={`${styles.titleLink} ${safeIconPosition === "center" ? styles.centerText : ""}`}
         >
           <Text as="span">{title}</Text>
-        </Link>
+        </AnchorLink>
       );
     }
 
