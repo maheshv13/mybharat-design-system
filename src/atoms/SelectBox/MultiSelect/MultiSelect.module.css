@@ -39,7 +39,7 @@
 
   gap: var(--space-sm);
 
-  padding: 0.70rem 0 .70rem .75rem;
+  padding: 0.70rem 0 0.70rem 0.75rem;
 
   border: 1px solid var(--color-stroke200);
   border-radius: 8px;
@@ -47,8 +47,6 @@
   background: var(--color-white);
 
   color: inherit;
-
-  cursor: pointer;
 
   text-align: left;
 
@@ -61,10 +59,7 @@
   border-color: var(--color-primary);
 }
 
-.selectWrapper.open .trigger,
-.trigger:focus-visible {
-  outline: none;
-
+.selectWrapper.open .trigger {
   border-color: var(--color-primary);
 
   box-shadow:
@@ -72,7 +67,57 @@
     var(--color-primary200);
 }
 
-.trigger:disabled {
+.triggerButton {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: inherit;
+
+  font: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.triggerButton:focus-visible {
+  outline: none;
+}
+
+.triggerIconButton {
+  flex-shrink: 0;
+
+  width: 40px;
+  height: 40px;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.triggerIconButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+
+.triggerButton:disabled,
+.triggerIconButton:disabled {
   cursor: not-allowed;
 }
 

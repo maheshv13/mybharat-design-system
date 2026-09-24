@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-.label, 
+.label,
 .formcontrol {
   width: 100%;
 }
@@ -25,16 +25,35 @@
   margin-inline-end: 2px;
 }
 
+/* ================= INPUT SECTION ================= */
+
 .section {
   position: relative;
 }
 
+/* ================= INPUT ICON ================= */
+
 .icon {
   position: absolute;
   font-size: 1.25rem;
-  inset-inline-start: 12px;
-  inset-block-start: 16px;
+
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+
+  pointer-events: none;
 }
+
+/* Default / left icon */
+.iconLeft .icon {
+  inset-inline-start: 12px;
+}
+
+/* Right icon */
+.iconRight .icon {
+  inset-inline-end: 12px;
+}
+
+/* ================= INPUT ================= */
 
 .wrapper .formcontrol {
   border: 1px solid var(--color-stroke200);
@@ -47,17 +66,23 @@
   color: var(--color-neutralColor500);
 }
 
-.wrapper .icon + .formcontrol {
-  padding: 12px 12px 12px 36px;
+/* Left icon */
+.wrapper .iconLeft .formcontrol {
+  padding-inline-start: 36px;
 }
+
+/* Right icon */
+.wrapper .iconRight .formcontrol {
+  padding-inline-end: 36px;
+}
+
+/* ================= LARGE ================= */
 
 .wrapper .section.lg .formcontrol {
   height: 56px;
 }
 
-.wrapper .section.lg .icon {
-  inset-block-start: 20px;
-}
+/* ================= STATES ================= */
 
 .wrapper .success .formcontrol {
   border-color: var(--color-success);
@@ -75,6 +100,8 @@
   color: var(--color-danger);
 }
 
+/* ================= FOCUS ================= */
+
 .wrapper .formcontrol:hover,
 .wrapper .formcontrol:focus-visible,
 .wrapper .formcontrol:focus-within,
@@ -84,14 +111,18 @@
 }
 
 .wrapper .formcontrol:focus {
-  box-shadow:0 0 0 4px var(--color-primary200);
+  box-shadow: 0 0 0 4px var(--color-primary200);
 }
+
+/* ================= FILTER ================= */
 
 .wrapper .filter .formcontrol {
   border: none;
   border-radius: 0;
   border-bottom: 1px solid var(--color-stroke200);
 }
+
+/* ================= DESCRIPTION ================= */
 
 .description {
   display: flex;

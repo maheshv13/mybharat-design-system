@@ -17,6 +17,7 @@ export { default as TableHeaderRow } from "./TableHeaderRow/TableHeaderRow";
 export { default as TableRow } from "./TableRow/TableRow";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as TileGroup } from "./TileGroup/TileGroup";
+export { default as DatePicker } from "./DatePicker/DatePicker";
 export type {
   TabsProps,
   TabData,

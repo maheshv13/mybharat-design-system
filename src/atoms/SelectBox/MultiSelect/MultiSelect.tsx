@@ -1,13 +1,14 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
-  useLayoutEffect,
 } from "react";
 
 import type {
+  MouseEvent,
   ReactNode,
   SelectHTMLAttributes,
 } from "react";
@@ -26,25 +27,15 @@ export interface MultiSelectProps
     "value" | "onChange" | "multiple"
   > {
   id?: string;
-
   label?: ReactNode;
-
   description?: ReactNode;
-
   options?: MultiSelectOption[];
-
   value?: string[];
-
   defaultValue?: string[];
-
   placeholder?: string;
-
   required?: boolean;
-
   disabled?: boolean;
-
   error?: boolean;
-
   onChange?: (value: string[]) => void;
 }
 
@@ -52,24 +43,16 @@ const MultiSelect = ({
   id,
   label,
   description,
-
   options = [],
-
   value,
   defaultValue = [],
-
   placeholder = "Select options",
-
   required = false,
-
   disabled = false,
-
   error = false,
-
   onChange,
 }: MultiSelectProps) => {
-  const wrapperRef =
-    useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const selectedValuesRef =
     useRef<HTMLDivElement | null>(null);
@@ -90,7 +73,7 @@ const MultiSelect = ({
     useState(false);
 
   const [visibleTagCount, setVisibleTagCount] =
-    useState<number>(0);
+    useState(0);
 
   /*
    * Controlled / uncontrolled support
@@ -105,24 +88,16 @@ const MultiSelect = ({
     return options.filter((option) =>
       selectedValues.includes(option.value)
     );
-  }, [
-    options,
-    selectedValues,
-  ]);
+  }, [options, selectedValues]);
 
   /*
    * Visible and hidden options
    */
   const visibleSelectedOptions =
-    selectedOptions.slice(
-      0,
-      visibleTagCount
-    );
+    selectedOptions.slice(0, visibleTagCount);
 
   const hiddenSelectedOptions =
-    selectedOptions.slice(
-      visibleTagCount
-    );
+    selectedOptions.slice(visibleTagCount);
 
   const hiddenSelectedCount =
     hiddenSelectedOptions.length;
@@ -132,7 +107,7 @@ const MultiSelect = ({
    */
   useEffect(() => {
     const handleClickOutside = (
-      event: MouseEvent
+      event: globalThis.MouseEvent
     ) => {
       if (
         wrapperRef.current &&
@@ -178,14 +153,11 @@ const MultiSelect = ({
     optionValue: string
   ) => {
     const isSelected =
-      selectedValues.includes(
-        optionValue
-      );
+      selectedValues.includes(optionValue);
 
     const nextValue = isSelected
       ? selectedValues.filter(
-          (item) =>
-            item !== optionValue
+          (item) => item !== optionValue
         )
       : [
           ...selectedValues,
@@ -198,20 +170,19 @@ const MultiSelect = ({
   /*
    * Remove selected option
    */
- const handleRemove = (
-  event: React.MouseEvent,
-  optionValue: string
-) => {
-  event.stopPropagation();
+  const handleRemove = (
+    event: MouseEvent,
+    optionValue: string
+  ) => {
+    event.stopPropagation();
 
-  const nextValue =
-    selectedValues.filter(
-      (item) =>
-        item !== optionValue
-    );
+    const nextValue =
+      selectedValues.filter(
+        (item) => item !== optionValue
+      );
 
-  updateValue(nextValue);
-};
+    updateValue(nextValue);
+  };
 
   /*
    * Toggle main dropdown
@@ -219,116 +190,111 @@ const MultiSelect = ({
   const handleTriggerClick = () => {
     if (disabled) return;
 
-    setIsOpen((current) =>
-      !current
-    );
-
+    setIsOpen((current) => !current);
     setIsSelectedPopupOpen(false);
   };
 
   /*
    * Calculate how many tags fit
-   *
-   * Hidden measurement elements are used so
-   * the calculation is based on actual widths.
    */
   const calculateVisibleTags = useCallback(() => {
-  const container =
-    selectedValuesRef.current;
+    const container =
+      selectedValuesRef.current;
 
-  const measurementContainer =
-    measurementRef.current;
+    const measurementContainer =
+      measurementRef.current;
 
-  if (
-    !container ||
-    !measurementContainer
-  ) {
-    return;
-  }
+    if (
+      !container ||
+      !measurementContainer
+    ) {
+      return;
+    }
 
-  if (selectedOptions.length === 0) {
-    setVisibleTagCount(0);
-    return;
-  }
+    if (selectedOptions.length === 0) {
+      setVisibleTagCount(0);
+      return;
+    }
 
-  const availableWidth =
-    container.clientWidth;
+    const availableWidth =
+      container.clientWidth;
 
-  if (availableWidth <= 0) {
-    return;
-  }
+    if (availableWidth <= 0) {
+      return;
+    }
 
-  const tagElements =
-    measurementContainer.querySelectorAll(
-      '[data-measure-tag="true"]'
+    const tagElements =
+      measurementContainer.querySelectorAll(
+        '[data-measure-tag="true"]'
+      );
+
+    const moreButton =
+      moreButtonMeasureRef.current;
+
+    if (!moreButton) {
+      return;
+    }
+
+    const moreButtonWidth =
+      moreButton.offsetWidth;
+
+    let usedWidth = 0;
+    let count = 0;
+
+    tagElements.forEach(
+      (element, index) => {
+        const tagWidth =
+          (element as HTMLElement)
+            .offsetWidth;
+
+        const remainingCount =
+          selectedOptions.length -
+          index -
+          1;
+
+        const requiredWidth =
+          tagWidth +
+          (count > 0 ? 6 : 0) +
+          (remainingCount > 0
+            ? moreButtonWidth + 6
+            : 0);
+
+        if (
+          usedWidth + requiredWidth <=
+          availableWidth
+        ) {
+          usedWidth +=
+            tagWidth +
+            (count > 0 ? 6 : 0);
+
+          count += 1;
+        }
+      }
     );
 
-  const moreButton =
-    moreButtonMeasureRef.current;
-
-  if (!moreButton) {
-    return;
-  }
-
-  const moreButtonWidth =
-    moreButton.offsetWidth;
-
-  let usedWidth = 0;
-  let count = 0;
-
-  tagElements.forEach(
-    (element, index) => {
-      const tagWidth =
-        (element as HTMLElement)
-          .offsetWidth;
-
-      const remainingCount =
-        selectedOptions.length -
-        index -
-        1;
-
-      const requiredWidth =
-        tagWidth +
-        (count > 0 ? 6 : 0) +
-        (remainingCount > 0
-          ? moreButtonWidth + 6
-          : 0);
-
-      if (
-        usedWidth + requiredWidth <=
-        availableWidth
-      ) {
-        usedWidth +=
-          tagWidth +
-          (count > 0 ? 6 : 0);
-
-        count += 1;
-      }
+    if (
+      count === 0 &&
+      selectedOptions.length > 0
+    ) {
+      count = 1;
     }
-  );
 
-  if (
-    count === 0 &&
-    selectedOptions.length > 0
-  ) {
-    count = 1;
-  }
-
-  setVisibleTagCount(count);
-}, [selectedOptions]);
+    setVisibleTagCount(count);
+  }, [selectedOptions]);
 
   /*
    * Recalculate after selection changes
    */
-useLayoutEffect(() => {
-   const frame = requestAnimationFrame(() => {
-    calculateVisibleTags();
-  });
+  useLayoutEffect(() => {
+    const frame =
+      requestAnimationFrame(() => {
+        calculateVisibleTags();
+      });
 
-  return () => {
-    cancelAnimationFrame(frame);
-  };
-}, [calculateVisibleTags]);
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, [calculateVisibleTags]);
 
   /*
    * Recalculate when width changes
@@ -383,45 +349,41 @@ useLayoutEffect(() => {
       <div
         className={[
           styles.selectWrapper,
-
-          isOpen
-            ? styles.open
-            : "",
-
-          disabled
-            ? styles.disabled
-            : "",
-
-          error
-            ? styles.error
-            : "",
+          isOpen ? styles.open : "",
+          disabled ? styles.disabled : "",
+          error ? styles.error : "",
         ]
           .filter(Boolean)
           .join(" ")}
       >
         {/* ================= TRIGGER ================= */}
 
-        <button
-          id={id}
-          type="button"
+        <div
           className={styles.trigger}
-          onClick={handleTriggerClick}
-          disabled={disabled}
-          aria-haspopup="listbox"
-          aria-expanded={isOpen}
+          aria-disabled={disabled}
         >
           <div
             ref={selectedValuesRef}
             className={styles.selectedValues}
           >
             {selectedOptions.length === 0 ? (
-              <span
-                className={
-                  styles.placeholder
-                }
+              <button
+                id={id}
+                type="button"
+                className={styles.triggerButton}
+                onClick={handleTriggerClick}
+                disabled={disabled}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
               >
-                {placeholder}
-              </span>
+                <span
+                  className={
+                    styles.placeholder
+                  }
+                >
+                  {placeholder}
+                </span>
+              </button>
             ) : (
               <>
                 {visibleSelectedOptions.map(
@@ -459,8 +421,6 @@ useLayoutEffect(() => {
                   )
                 )}
 
-                {/* +N BUTTON */}
-
                 {hiddenSelectedCount > 0 && (
                   <button
                     type="button"
@@ -471,8 +431,7 @@ useLayoutEffect(() => {
                       event.stopPropagation();
 
                       setIsSelectedPopupOpen(
-                        (current) =>
-                          !current
+                        (current) => !current
                       );
 
                       setIsOpen(false);
@@ -480,6 +439,7 @@ useLayoutEffect(() => {
                     aria-expanded={
                       isSelectedPopupOpen
                     }
+                    aria-label={`${hiddenSelectedCount} more selected options`}
                   >
                     +{hiddenSelectedCount}
                   </button>
@@ -488,21 +448,39 @@ useLayoutEffect(() => {
             )}
           </div>
 
-          {/* ARROW */}
+          {/* ARROW / OPEN-CLOSE BUTTON */}
 
-          <span
-            className={[
-              styles.arrow,
-
+          <button
+            id={
+              selectedOptions.length > 0
+                ? id
+                : undefined
+            }
+            type="button"
+            className={styles.triggerIconButton}
+            onClick={handleTriggerClick}
+            disabled={disabled}
+            aria-haspopup="listbox"
+            aria-expanded={isOpen}
+            aria-label={
               isOpen
-                ? styles.arrowOpen
-                : "",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-            aria-hidden="true"
-          />
-        </button>
+                ? "Close options"
+                : "Open options"
+            }
+          >
+            <span
+              className={[
+                styles.arrow,
+                isOpen
+                  ? styles.arrowOpen
+                  : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              aria-hidden="true"
+            />
+          </button>
+        </div>
 
         {/* ================= SELECTED OPTIONS POPUP ================= */}
 
@@ -564,56 +542,50 @@ useLayoutEffect(() => {
 
         {isOpen && (
           <div
-            className={
-              styles.dropdown
-            }
+            className={styles.dropdown}
             role="listbox"
             aria-multiselectable="true"
           >
-            {options.map(
-              (option) => {
-                const isSelected =
-                  selectedValues.includes(
-                    option.value
-                  );
-
-                return (
-                  <label
-                    key={option.value}
-                    className={[
-                      styles.option,
-
-                      isSelected
-                        ? styles.optionSelected
-                        : "",
-
-                      option.disabled
-                        ? styles.optionDisabled
-                        : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isSelected}
-                      disabled={
-                        option.disabled
-                      }
-                      onChange={() =>
-                        handleOptionToggle(
-                          option.value
-                        )
-                      }
-                    />
-
-                    <span>
-                      {option.label}
-                    </span>
-                  </label>
+            {options.map((option) => {
+              const isSelected =
+                selectedValues.includes(
+                  option.value
                 );
-              }
-            )}
+
+              return (
+                <label
+                  key={option.value}
+                  className={[
+                    styles.option,
+                    isSelected
+                      ? styles.optionSelected
+                      : "",
+                    option.disabled
+                      ? styles.optionDisabled
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    disabled={
+                      option.disabled
+                    }
+                    onChange={() =>
+                      handleOptionToggle(
+                        option.value
+                      )
+                    }
+                  />
+
+                  <span>
+                    {option.label}
+                  </span>
+                </label>
+              );
+            })}
           </div>
         )}
 
@@ -621,9 +593,7 @@ useLayoutEffect(() => {
 
         <div
           ref={measurementRef}
-          className={
-            styles.measurement
-          }
+          className={styles.measurement}
           aria-hidden="true"
         >
           {selectedOptions.map(
@@ -655,9 +625,7 @@ useLayoutEffect(() => {
           <button
             ref={moreButtonMeasureRef}
             type="button"
-            className={
-              styles.moreCount
-            }
+            className={styles.moreCount}
           >
             +99
           </button>
@@ -668,9 +636,7 @@ useLayoutEffect(() => {
 
       {description && (
         <div
-          className={
-            styles.description
-          }
+          className={styles.description}
         >
           {description}
         </div>

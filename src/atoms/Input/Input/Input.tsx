@@ -18,6 +18,10 @@ type InputSize =
   | "default"
   | "lg";
 
+type InputIconPosition =
+  | "left"
+  | "right";
+
 interface InputProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -30,6 +34,7 @@ interface InputProps
 
   labelIcon?: IconName;
   icon?: IconName;
+  iconPosition?: InputIconPosition;
   descIcon?: IconName;
 
   variant?: InputVariant;
@@ -46,6 +51,7 @@ const Input = ({
 
   labelIcon,
   icon,
+  iconPosition = "left",
   descIcon,
 
   variant = "default",
@@ -64,10 +70,18 @@ const Input = ({
       ? styles[variant]
       : "";
 
+  const iconPositionClass =
+    icon
+      ? iconPosition === "right"
+        ? styles.iconRight
+        : styles.iconLeft
+      : "";
+
   const sectionClasses = [
     styles.section,
     sizeClass,
     variantClass,
+    iconPositionClass,
   ]
     .filter(Boolean)
     .join(" ");
@@ -110,6 +124,7 @@ const Input = ({
             name={icon}
             size="md"
             className={styles.icon}
+            aria-hidden="true"
           />
         )}
 
