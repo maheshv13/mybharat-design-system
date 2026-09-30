@@ -349,6 +349,7 @@ const DatePicker = ({
           }
           placeholder={placeholder}
           icon="calendar"
+          iconPosition="right"
           readOnly
           required={required}
           disabled={disabled}
@@ -374,6 +375,7 @@ const DatePicker = ({
               disabled={!canGoPrevious}
               onClick={handlePreviousMonth}
               aria-label="Previous month"
+              className={styles.prevButton}
             />
 
             <span className={styles.monthTitle}>
@@ -388,6 +390,7 @@ const DatePicker = ({
               disabled={!canGoNext}
               onClick={handleNextMonth}
               aria-label="Next month"
+              className={styles.nextButton}
             />
           </div>
 

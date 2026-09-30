@@ -34,6 +34,12 @@
   margin-bottom: 16px;
 }
 
+.prevButton,
+.nextButton {
+  padding: 4px;
+  font-size: 1.25rem;
+}
+
 .monthTitle {
   font-size: 16px;
   font-weight: 600;
