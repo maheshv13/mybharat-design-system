@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 
 import Input from "../../atoms/Input/Input/Input";
@@ -33,12 +33,12 @@ export interface FilterField {
   options?: Array<string | FilterOption>;
 
   /**
-   * Disable the field based on current values.
+   * Dynamically disable the field based on current filter values.
    */
   disabled?: (filters: FilterValues) => boolean;
 
   /**
-   * Completely hide the field.
+   * Dynamically hide the field based on current filter values.
    */
   hidden?: (
     showMore: boolean,
@@ -46,7 +46,7 @@ export interface FilterField {
   ) => boolean;
 
   /**
-   * Optional field-level UI callback.
+   * Field-level change callback.
    */
   onChange?: (
     value: FilterValue,
@@ -56,16 +56,33 @@ export interface FilterField {
 
 export interface FilterBarProps {
   config?: FilterField[];
+
+  /**
+   * Controlled filter values.
+   */
   filters?: FilterValues;
-  onChange?: (
-    filters: FilterValues
-  ) => void;
-  onApply?: (
-    filters: FilterValues
-  ) => void;
+
+  /**
+   * Called whenever any filter changes.
+   */
+  onChange?: (filters: FilterValues) => void;
+
+  /**
+   * Called when Apply is clicked.
+   */
+  onApply?: (filters: FilterValues) => void;
+
+  /**
+   * Called when Clear is clicked.
+   *
+   * The parent component should reset `filters`.
+   */
   onClear?: () => void;
+
   variant?: string;
+
   title?: ReactNode;
+
   showActions?: boolean;
 }
 
@@ -81,96 +98,151 @@ const FilterBar = ({
   title = "Filter By:",
   showActions = true,
 }: FilterBarProps) => {
-  const [showMore, setShowMore] =
-    useState(false);
+  const [showMore, setShowMore] = useState(false);
 
-  /*
-   * Update a field.
+  /**
+   * Normalize all filter options into:
    *
-   * The actual filter state belongs
-   * to the parent/page.
+   * {
+   *   value: string;
+   *   label: string;
+   * }
+   */
+  const normalizeOptions = (
+    options: Array<string | FilterOption> = []
+  ): FilterOption[] => {
+    return options.map((option) =>
+      typeof option === "string"
+        ? {
+            value: option,
+            label: option,
+          }
+        : option
+    );
+  };
+
+  /**
+   * Fields that are allowed to participate in the filter UI.
+   *
+   * Important:
+   *
+   * We calculate hidden fields before applying INITIAL_VISIBLE.
+   * This prevents a hidden field from consuming one of the
+   * first four visible slots.
+   */
+  const eligibleFields = useMemo(() => {
+    return config.filter(
+      (field) =>
+        !(field.hidden?.(showMore, filters) ?? false)
+    );
+  }, [config, filters, showMore]);
+
+  /**
+   * Fields displayed in the current state.
+   */
+  const visibleFields = useMemo(() => {
+    if (showMore) {
+      return eligibleFields;
+    }
+
+    return eligibleFields.slice(0, INITIAL_VISIBLE);
+  }, [eligibleFields, showMore]);
+
+  /**
+   * Whether there are additional fields that can be shown.
+   */
+  const hasMoreFields =
+    eligibleFields.length > INITIAL_VISIBLE;
+
+  /**
+   * Determines whether a filter has an active value.
+   *
+   * Empty strings and "All" are treated as default values.
+   */
+  const hasFilters = useMemo(() => {
+    return Object.values(filters).some((value) => {
+      if (value === undefined || value === null) {
+        return false;
+      }
+
+      if (typeof value === "string") {
+        return value.trim() !== "" && value !== "All";
+      }
+
+      if (Array.isArray(value)) {
+        return value.length > 0;
+      }
+
+      if (typeof value === "boolean") {
+        return value;
+      }
+
+      return false;
+    });
+  }, [filters]);
+
+  /**
+   * Update one filter value.
    */
   const handleChange = (
     name: string,
     value: FilterValue,
     field: FilterField
   ) => {
-    const updatedFilters = {
+    const updatedFilters: FilterValues = {
       ...filters,
       [name]: value,
     };
 
-    field.onChange?.(
-      value,
-      updatedFilters
-    );
+    field.onChange?.(value, updatedFilters);
 
     onChange?.(updatedFilters);
   };
 
-  /*
-   * Check whether any filter
-   * currently contains a value.
+  /**
+   * Input change handler.
    */
-  const hasFilters = useMemo(() => {
-    return Object.values(filters).some(
-      (value) => {
-        if (
-          value === undefined ||
-          value === null
-        ) {
-          return false;
-        }
-
-        if (typeof value === "string") {
-          return (
-            value !== "" &&
-            value !== "All"
-          );
-        }
-
-        if (Array.isArray(value)) {
-          return value.length > 0;
-        }
-
-        if (typeof value === "boolean") {
-          return value;
-        }
-
-        return false;
-      }
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    field: FilterField
+  ) => {
+    handleChange(
+      field.name,
+      event.target.value,
+      field
     );
-  }, [filters]);
+  };
 
-  /*
-   * Fields visible according to
-   * Show More state.
+  /**
+   * Toggle Show More / Show Less.
    */
-  const visibleFields = config.filter(
-    (field, index) => {
-      if (
-        field.hidden?.(
-          showMore,
-          filters
-        )
-      ) {
-        return false;
-      }
+  const handleToggle = () => {
+    setShowMore((previous) => !previous);
+  };
 
-      return (
-        showMore ||
-        index < INITIAL_VISIBLE
-      );
-    }
-  );
-
-  /*
-   * Clear button.
+  /**
+   * Clear filters.
    *
-   * Parent owns the actual values.
+   * FilterBar remains controlled, therefore the parent
+   * must reset the filters inside onClear.
    */
   const handleClear = () => {
+    if (!hasFilters) {
+      return;
+    }
+
     onClear?.();
+  };
+
+  /**
+   * Apply current filters.
+   */
+  const handleApply = () => {
+    if (!hasFilters) {
+      return;
+    }
+
+    onApply?.(filters);
   };
 
   return (
@@ -187,26 +259,19 @@ const FilterBar = ({
           </h6>
         )}
 
-        {/* ================= FIELDS ================= */}
-
         <div className={styles.fields}>
           {visibleFields.map((field) => {
-            const value =
-              filters[field.name];
+            const value = filters[field.name];
+
+            const disabled =
+              field.disabled?.(filters) ?? false;
 
             const normalizedOptions =
-              (field.options || []).map(
-                (option) =>
-                  typeof option === "string"
-                    ? {
-                        value: option,
-                        label: option,
-                      }
-                    : option
-              );
+              normalizeOptions(field.options);
 
-            /* ================= INPUT ================= */
-
+            /**
+             * INPUT / SEARCH
+             */
             if (field.type === "input") {
               return (
                 <div
@@ -216,25 +281,16 @@ const FilterBar = ({
                   <Input
                     label={field.label}
                     variant="filter"
-                    placeholder={
-                      field.placeholder
-                    }
+                    placeholder={field.placeholder}
                     value={
                       typeof value === "string"
                         ? value
                         : ""
                     }
-                    disabled={
-                      field.disabled?.(
-                        filters
-                      )
-                    }
-                    onChange={(
-                      event: ChangeEvent<HTMLInputElement>
-                    ) =>
-                      handleChange(
-                        field.name,
-                        event.target.value,
+                    disabled={disabled}
+                    onChange={(event) =>
+                      handleInputChange(
+                        event,
                         field
                       )
                     }
@@ -243,8 +299,9 @@ const FilterBar = ({
               );
             }
 
-            /* ================= SELECT ================= */
-
+            /**
+             * SELECT
+             */
             if (field.type === "select") {
               return (
                 <div
@@ -254,19 +311,13 @@ const FilterBar = ({
                   <Select
                     label={field.label}
                     variant="filter"
-                    options={
-                      normalizedOptions
-                    }
+                    options={normalizedOptions}
                     value={
                       typeof value === "string"
                         ? value
                         : ""
                     }
-                    disabled={
-                      field.disabled?.(
-                        filters
-                      )
-                    }
+                    disabled={disabled}
                     onChange={(newValue) =>
                       handleChange(
                         field.name,
@@ -279,42 +330,31 @@ const FilterBar = ({
               );
             }
 
-            /*
-             * Checkbox and Radio rendering
-             * should use your existing atoms.
-             *
-             * These sections are intentionally
-             * prepared for integration.
+            /**
+             * CHECKBOX
              */
+            if (field.type === "checkbox") {
+              const currentValue = Array.isArray(value)
+                ? value
+                : [];
 
-            if (
-              field.type === "checkbox"
-            ) {
               return (
-                <div
+                <fieldset
                   key={field.name}
                   className={styles.field}
+                  disabled={disabled}
                 >
-                  <span
-                    className={
-                      styles.fieldLabel
-                    }
+                  <legend
+                    className={styles.fieldLabel}
                   >
                     {field.label}
-                  </span>
+                  </legend>
 
                   <div
-                    className={
-                      styles.optionGroup
-                    }
+                    className={styles.optionGroup}
                   >
                     {normalizedOptions.map(
                       (option) => {
-                        const currentValue =
-                          Array.isArray(value)
-                            ? value
-                            : [];
-
                         const isChecked =
                           currentValue.includes(
                             option.value
@@ -332,15 +372,11 @@ const FilterBar = ({
                               value={
                                 option.value
                               }
-                              checked={
-                                isChecked
-                              }
-                              disabled={
-                                field.disabled?.(
-                                  filters
-                                )
-                              }
-                              onChange={(event) => {
+                              checked={isChecked}
+                              disabled={disabled}
+                              onChange={(
+                                event
+                              ) => {
                                 const updatedValue =
                                   event.target
                                     .checked
@@ -370,73 +406,68 @@ const FilterBar = ({
                       }
                     )}
                   </div>
-                </div>
+                </fieldset>
               );
             }
 
-            /* ================= RADIO ================= */
-
-            if (
-              field.type === "radio"
-            ) {
+            /**
+             * RADIO
+             */
+            if (field.type === "radio") {
               return (
-                <div
+                <fieldset
                   key={field.name}
                   className={styles.field}
+                  disabled={disabled}
                 >
-                  <span
-                    className={
-                      styles.fieldLabel
-                    }
+                  <legend
+                    className={styles.fieldLabel}
                   >
                     {field.label}
-                  </span>
+                  </legend>
 
                   <div
-                    className={
-                      styles.optionGroup
-                    }
+                    className={styles.optionGroup}
                   >
                     {normalizedOptions.map(
-                      (option) => (
-                        <label
-                          key={option.value}
-                          className={
-                            styles.option
-                          }
-                        >
-                          <input
-                            type="radio"
-                            name={field.name}
-                            value={
-                              option.value
-                            }
-                            checked={
-                              value ===
-                              option.value
-                            }
-                            disabled={
-                              field.disabled?.(
-                                filters
-                              )
-                            }
-                            onChange={() =>
-                              handleChange(
-                                field.name,
-                                option.value,
-                                field
-                              )
-                            }
-                          />
+                      (option) => {
+                        const isChecked =
+                          value ===
+                          option.value;
 
-                          <span>
-                            {option.label}
-                          </span>
-                        </label>
-                      )
+                        return (
+                          <label
+                            key={option.value}
+                            className={
+                              styles.option
+                            }
+                          >
+                            <input
+                              type="radio"
+                              name={field.name}
+                              value={
+                                option.value
+                              }
+                              checked={isChecked}
+                              disabled={disabled}
+                              onChange={() =>
+                                handleChange(
+                                  field.name,
+                                  option.value,
+                                  field
+                                )
+                              }
+                            />
+
+                            <span>
+                              {option.label}
+                            </span>
+                          </label>
+                        );
+                      }
                     )}
                   </div>
-                </div>
+                </fieldset>
               );
             }
 
@@ -444,25 +475,14 @@ const FilterBar = ({
           })}
         </div>
 
-        {/* ================= ACTIONS ================= */}
-
-        {(config.length >
-          INITIAL_VISIBLE ||
-          showActions) && (
+        {(hasMoreFields || showActions) && (
           <div className={styles.actions}>
-            {/* Show More */}
-
-            {config.length >
-              INITIAL_VISIBLE && (
+            {hasMoreFields && (
               <button
                 type="button"
                 className={styles.toggle}
-                onClick={() =>
-                  setShowMore(
-                    (previous) =>
-                      !previous
-                  )
-                }
+                onClick={handleToggle}
+                aria-expanded={showMore}
               >
                 {showMore
                   ? "Show Less"
@@ -470,32 +490,20 @@ const FilterBar = ({
               </button>
             )}
 
-            {/* Buttons */}
-
             {showActions && (
-              <div
-                className={
-                  styles.buttons
-                }
-              >
+              <div className={styles.buttons}>
                 <Button
                   label="Clear"
                   variant="primary-outlined"
                   disabled={!hasFilters}
-                  onClick={
-                    handleClear
-                  }
+                  onClick={handleClear}
                 />
 
                 <Button
                   label="Apply"
                   variant="primary"
                   disabled={!hasFilters}
-                  onClick={() =>
-                    onApply?.(
-                      filters
-                    )
-                  }
+                  onClick={handleApply}
                 />
               </div>
             )}

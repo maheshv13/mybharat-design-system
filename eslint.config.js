@@ -33,6 +33,15 @@ export default defineConfig([
     },
   },
 
+  {
+    files: ["cli/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+
   // TypeScript / TSX
   {
     files: ["**/*.{ts,tsx}"],

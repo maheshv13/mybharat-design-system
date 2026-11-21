@@ -1,6 +1,6 @@
 {
   "name": "@mybharatyouth/design-system",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "MY Bharat React Design System",
   "type": "module",
   "publishConfig": {
@@ -18,7 +18,10 @@
     "./styles.css": "./dist/design-system.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "cli",
+    "README.md",
+    "LICENSE"    
   ],
   "scripts": {
     "dev": "vite",
@@ -34,6 +37,8 @@
     "react-dom": ">=18 <20"
   },
   "dependencies": {
+    "@inquirer/prompts": "^8.7.5",
+    "commander": "^15.1.0",
     "react-icons": "^5.7.0"
   },
   "devDependencies": {
@@ -76,6 +81,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maheshv13/mybharat-design-system.git"
+  },
+  "bin": {
+    "mybharat-design-system": "./cli/index.js"
   },
   "homepage": "https://maheshv13.github.io/mybharat-design-system/",
   "license": "MIT"

@@ -29,6 +29,11 @@
   color: var(--color-text-light);
 }
 
+.secondary {
+  background: var(--color-secondary);
+  color: var(--color-text-light);
+}
+
 .tonal {
   background: var(--color-primary100);
   color: var(--color-text-dark);
