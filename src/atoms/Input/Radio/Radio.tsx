@@ -1,9 +1,13 @@
+
 import styles from "./Radio.module.css";
 import type { InputHTMLAttributes, ReactNode } from "react";
 
 type LabelPosition = "right" | "left";
 
-interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "id" | "name" | "checked" | "disabled"> {
+interface RadioProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  "type" | "id" | "name" | "checked" | "disabled" | "defaultChecked"
+> {
   id?: string;
   label?: ReactNode;
   name?: string;
@@ -17,36 +21,43 @@ const Radio = ({
   id,
   label,
   name,
-  labelPosition = "right", // right | left 
+  value,
+  labelPosition = "right",
   required = false,
-  checked = false,
-  disabled = false
+  checked,
+  disabled = false,
+  onChange,
+  className,
+  ...rest
 }: RadioProps) => {
-  return(
-    <div className={styles.wrapper}>  
-      { labelPosition === "left" && (
+  return (
+    <div className={styles.wrapper}>
+      {labelPosition === "left" && (
         <label htmlFor={id} className={styles.label}>
           {label}
         </label>
       )}
-      
-      <input 
-        type="radio" 
+
+      <input
+        {...rest}
+        type="radio"
         name={name}
-        className={styles.formcontrol} 
+        value={value}
+        className={`${styles.formcontrol} ${className || ""}`}
         id={id}
         checked={checked}
         required={required}
         disabled={disabled}
-        />
-      
-      { labelPosition === "right" && (
+        onChange={onChange}
+      />
+
+      {labelPosition === "right" && (
         <label htmlFor={id} className={styles.label}>
           {label}
         </label>
       )}
     </div>
-  )
-}
+  );
+};
 
 export default Radio;
