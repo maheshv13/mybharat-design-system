@@ -4,7 +4,11 @@ import type { InputHTMLAttributes, ReactNode } from "react";
 
 type LabelPosition = "right" | "left";
 
-interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "id" | "name" | "checked" | "disabled"> {
+interface CheckboxProps
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    "type" | "id" | "name" | "checked" | "disabled" | "defaultChecked"
+  > {
   id?: string;
   label?: ReactNode;
   name?: string;
@@ -18,11 +22,14 @@ const Checkbox = ({
   id,
   label,
   name,
+  value,
   labelPosition = "right",
   required = false,
-  checked = false,
+  checked,
   disabled = false,
   onChange,
+  className,
+  ...rest
 }: CheckboxProps) => {
   return (
     <div className={styles.wrapper}>
@@ -33,9 +40,11 @@ const Checkbox = ({
       )}
 
       <input
+        {...rest}
         type="checkbox"
         name={name}
-        className={styles.formcontrol}
+        value={value}
+        className={`${styles.formcontrol} ${className || ""}`}
         id={id}
         checked={checked}
         required={required}
